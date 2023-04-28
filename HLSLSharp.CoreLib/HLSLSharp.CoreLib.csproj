@@ -28,6 +28,7 @@
     <Compile Include="System\AttributeUsageAttribute.cs" />
     <Compile Include="System\Enum.cs" />
     <Compile Include="System\FlagsAttribute.cs" />
+    <Compile Include="System\IFloatable.cs" />
     <Compile Include="System\IVector.cs" />
     <Compile Include="System\Scalar.cs" />
     <Compile Include="System\IScalar.cs" />
