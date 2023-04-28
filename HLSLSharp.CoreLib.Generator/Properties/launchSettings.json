@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Source Generator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\HLSLSharp.CoreLib\\HLSLSharp.CoreLib.csproj"
+    }
+  }
+}
