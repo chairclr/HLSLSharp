@@ -3,6 +3,7 @@
 // For some reason, GitHub detects this file
 // as "Smalltalk" rather than "C#", it is
 // wildly confusing
+// Adding this comment fixes the above issue
 
 [Flags]
 public enum AttributeTargets
