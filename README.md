@@ -1,5 +1,7 @@
 # HLSLSharp
 
+## This project is currently VERY WIP; most things do not work.
+
 HLSLSharp is a .NET library that allows you to compile and run C# code on the GPU through HLSL and D3D11. It is inspired by [ComputeSharp](https://github.com/Sergio0694/ComputeSharp) and based on [cshlsl](https://github.com/steviegt6/cshlsl).
 
 ## Installation
