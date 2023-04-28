@@ -44,15 +44,7 @@ public class SwizzleGenerator : IIncrementalGenerator
 
         SwizzleTransform TransformSwizzleables(GeneratorSyntaxContext context, CancellationToken cancellationToken)
         {
-            if (context.Node is not ClassDeclarationSyntax classDeclaration)
-            {
-                throw new Exception("Invalid Vector");
-            }
-
-            if (classDeclaration.BaseList is null)
-            {
-                throw new Exception("Invalid Vector");
-            }
+            ClassDeclarationSyntax classDeclaration = (ClassDeclarationSyntax)context.Node;
 
             SwizzleTransform GetTransformInfo(int vectorLength, string type)
             {
@@ -68,12 +60,7 @@ public class SwizzleGenerator : IIncrementalGenerator
                 return transform;
             };
 
-            SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList.Types;
-
-            if (types.Count < 1)
-            {
-                throw new Exception("Invalid Vector");
-            }
+            SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList!.Types;
 
             string firstType = types.First().Type.ToString();
 
