@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp", "HLSLSharp\HLSLSharp.csproj", "{B012E56C-562B-4F97-998F-A78B8ECEF1F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp", "HLSLSharp\HLSLSharp.csproj", "{B012E56C-562B-4F97-998F-A78B8ECEF1F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Compiler", "HLSLSharp.Compiler\HLSLSharp.Compiler.csproj", "{BB81AF92-C4BC-4944-B046-7BDAE07657CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Compiler", "HLSLSharp.Compiler\HLSLSharp.Compiler.csproj", "{BB81AF92-C4BC-4944-B046-7BDAE07657CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Runtime", "HLSLSharp.Runtime\HLSLSharp.Runtime.csproj", "{F5C0C4D2-91FE-4793-9245-C03C130A07B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Runtime", "HLSLSharp.Runtime\HLSLSharp.Runtime.csproj", "{F5C0C4D2-91FE-4793-9245-C03C130A07B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.CoreLib", "HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj", "{E30CC5EF-5DE9-4263-BC26-155778C9B631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.CoreLib", "HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj", "{E30CC5EF-5DE9-4263-BC26-155778C9B631}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.CoreLib.Generator", "HLSLSharp.CoreLib.Generator\HLSLSharp.CoreLib.Generator.csproj", "{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.CoreLib.Generator", "HLSLSharp.CoreLib.Generator\HLSLSharp.CoreLib.Generator.csproj", "{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Tests", "HLSLSharp.Tests\HLSLSharp.Tests.csproj", "{382FA9C6-51FF-4B61-9877-5116677F1286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{382FA9C6-51FF-4B61-9877-5116677F1286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382FA9C6-51FF-4B61-9877-5116677F1286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382FA9C6-51FF-4B61-9877-5116677F1286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382FA9C6-51FF-4B61-9877-5116677F1286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
