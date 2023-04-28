@@ -15,19 +15,28 @@ public class SwizzleGenerator : IIncrementalGenerator
     {
         bool FilterSwizzleables(SyntaxNode node, CancellationToken cancellationToken)
         {
-            if (node is ClassDeclarationSyntax classDeclaration)
+            if (node is not ClassDeclarationSyntax classDeclaration)
             {
-                if (classDeclaration.BaseList is not null)
-                {
-                    SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList.Types;
+                return false;
+            }
 
-                    string firstType = types.First().Type.ToString();
+            if (classDeclaration.BaseList is null)
+            {
+                return false;
+            }
 
-                    if (firstType.StartsWith("IVector<"))
-                    {
-                        return true;
-                    }
-                }
+            SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList.Types;
+
+            if (types.Count < 1)
+            {
+                return false;
+            }
+
+            string firstType = types.First().Type.ToString();
+
+            if (firstType.StartsWith("IVector<"))
+            {
+                return true;
             }
 
             return false;
@@ -35,45 +44,49 @@ public class SwizzleGenerator : IIncrementalGenerator
 
         SwizzleTransform TransformSwizzleables(GeneratorSyntaxContext context, CancellationToken cancellationToken)
         {
-            if (context.Node is ClassDeclarationSyntax classDeclaration)
+            if (context.Node is not ClassDeclarationSyntax classDeclaration)
             {
-                if (classDeclaration.BaseList is not null)
-                {
-                    SwizzleTransform GetTransformInfo(int vectorLength, string type)
-                    {
-                        SwizzleTransform transform = new SwizzleTransform()
-                        {
-                            Namespace = "System",
-                            SwizzleType = type,
-                            VectorType = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString(),
-                        };
-
-                        SwizzleGenerator.GenerateSwizzles(vectorLength, type, transform);
-
-                        return transform;
-                    };
-
-                    SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList.Types;
-
-                    string firstType = types.First().Type.ToString();
-
-                    string fullTypeName = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString();
-
-                    switch (fullTypeName)
-                    {
-                        case "Vector1<T>":
-                            return GetTransformInfo(1, "T");
-                        case "Vector2<T>":
-                            return GetTransformInfo(2, "T");
-                        case "Vector3<T>":
-                            return GetTransformInfo(3, "T");
-                        case "Vector4<T>":
-                            return GetTransformInfo(4, "T");
-                    }
-                }
+                throw new Exception("Invalid Vector");
             }
 
-            throw new Exception("Oops.");
+            if (classDeclaration.BaseList is null)
+            {
+                throw new Exception("Invalid Vector");
+            }
+
+            SwizzleTransform GetTransformInfo(int vectorLength, string type)
+            {
+                SwizzleTransform transform = new SwizzleTransform()
+                {
+                    Namespace = "System",
+                    SwizzleType = type,
+                    VectorType = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString(),
+                };
+
+                GenerateSwizzles(vectorLength, type, transform);
+
+                return transform;
+            };
+
+            SeparatedSyntaxList<BaseTypeSyntax> types = classDeclaration.BaseList.Types;
+
+            if (types.Count < 1)
+            {
+                throw new Exception("Invalid Vector");
+            }
+
+            string firstType = types.First().Type.ToString();
+
+            string fullTypeName = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString();
+
+            return fullTypeName switch
+            {
+                "Vector1<T>" => GetTransformInfo(1, "T"),
+                "Vector2<T>" => GetTransformInfo(2, "T"),
+                "Vector3<T>" => GetTransformInfo(3, "T"),
+                "Vector4<T>" => GetTransformInfo(4, "T"),
+                _ => throw new Exception("Invalid Vector"),
+            };
         };
 
         IncrementalValuesProvider<SwizzleTransform> swizzleTransforms = context.SyntaxProvider.CreateSyntaxProvider(FilterSwizzleables, TransformSwizzleables);
