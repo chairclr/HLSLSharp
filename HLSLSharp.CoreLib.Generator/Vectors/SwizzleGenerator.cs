@@ -51,8 +51,7 @@ public class SwizzleGenerator : IIncrementalGenerator
                 SwizzleTransform transform = new SwizzleTransform()
                 {
                     Namespace = "System",
-                    SwizzleType = type,
-                    VectorType = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString(),
+                    VectorTypeName = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString(),
                 };
 
                 GenerateSwizzles(vectorLength, type, transform);
@@ -87,7 +86,7 @@ public class SwizzleGenerator : IIncrementalGenerator
                 sb.AppendLine($"namespace {swizzleInfo.Namespace};");
             }
 
-            sb.AppendLine($"public partial class {swizzleInfo.VectorType}");
+            sb.AppendLine($"public partial class {swizzleInfo.VectorTypeName}");
             sb.AppendLine("{");
             foreach ((string type, string name) in swizzleInfo.SwizzledFields)
             {
@@ -95,7 +94,7 @@ public class SwizzleGenerator : IIncrementalGenerator
             }
             sb.AppendLine("}");
 
-            spc.AddSource($"Swizzle.{swizzleInfo.Namespace}.{swizzleInfo.VectorType.Replace("<T>", "T")}.g.cs", sb.ToString());
+            spc.AddSource($"Swizzle.{swizzleInfo.Namespace}.{swizzleInfo.VectorTypeName.Replace("<T>", "T")}.g.cs", sb.ToString());
         });
     }
 
@@ -181,9 +180,7 @@ public class SwizzleGenerator : IIncrementalGenerator
     {
         public string? Namespace;
 
-        public string VectorType = "";
-
-        public string SwizzleType = "";
+        public string VectorTypeName = "";
 
         public List<(string type, string name)> SwizzledFields = new List<(string type, string name)>();
     }
