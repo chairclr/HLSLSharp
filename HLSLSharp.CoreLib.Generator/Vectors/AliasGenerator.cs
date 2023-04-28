@@ -59,6 +59,16 @@ public class AliasGenerator : IIncrementalGenerator
                 sb.AppendLine($"namespace {aliasInfo.Namespace};");
             }
 
+            // Generate some documentation
+            string vectorDimensionNumbers = string.Concat(aliasInfo.GenericVectorTypeName.SkipWhile(x => !char.IsNumber(x)));
+
+            if (int.TryParse(vectorDimensionNumbers, out int dimension))
+            {
+                sb.AppendLine("/// <summary>");
+                sb.AppendLine($"/// Represents a {dimension}-dimensional vector of <see cref=\"{aliasInfo.GenericType}\"/>");
+                sb.AppendLine("/// </summary>");
+            }
+
             sb.AppendLine($"public partial class {aliasInfo.NewVectorTypeName} : {aliasInfo.GenericVectorTypeName}<{aliasInfo.GenericType}>");
             sb.AppendLine("{");
             sb.AppendLine("");
