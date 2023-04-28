@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace HLSLSharp.CoreLib.Generator;
+namespace HLSLSharp.CoreLib.Generator.Vectors;
 
 [Generator(LanguageNames.CSharp)]
 public class SwizzleGenerator : IIncrementalGenerator
@@ -40,7 +40,7 @@ public class SwizzleGenerator : IIncrementalGenerator
             {
                 if (classDeclaration.BaseList is not null)
                 {
-                    SwizzleTransform GenerateSwizzles(int vectorLength, string type)
+                    SwizzleTransform GetTransformInfo(int vectorLength, string type)
                     {
                         SwizzleTransform transform = new SwizzleTransform()
                         {
@@ -63,13 +63,13 @@ public class SwizzleGenerator : IIncrementalGenerator
                     switch (fullTypeName)
                     {
                         case "Vector1<T>":
-                            return GenerateSwizzles(1, "T");
+                            return GetTransformInfo(1, "T");
                         case "Vector2<T>":
-                            return GenerateSwizzles(2, "T");
+                            return GetTransformInfo(2, "T");
                         case "Vector3<T>":
-                            return GenerateSwizzles(3, "T");
+                            return GetTransformInfo(3, "T");
                         case "Vector4<T>":
-                            return GenerateSwizzles(4, "T");
+                            return GetTransformInfo(4, "T");
                     }
                 }
             }
