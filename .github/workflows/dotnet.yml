@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        platform: [x64, x86]
         
     runs-on: windows-2022
 
@@ -29,4 +28,4 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}}
+      run: dotnet build --no-restore /p:Configuration=${{matrix.configuration}}
