@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HLSLSharp.Compiler\HLSLSharp.Compiler.csproj" />
+    <ProjectReference Include="..\HLSLSharp.Runtime\HLSLSharp.Runtime.csproj" />
+  </ItemGroup>
+
 </Project>
