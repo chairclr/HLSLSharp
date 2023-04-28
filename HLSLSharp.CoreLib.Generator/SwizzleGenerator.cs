@@ -70,51 +70,6 @@ public class SwizzleGenerator : IIncrementalGenerator
                             return GenerateSwizzles(3, "T");
                         case "Vector4<T>":
                             return GenerateSwizzles(4, "T");
-
-                        case "Vector1":
-                            return GenerateSwizzles(1, "float");
-                        case "Vector2":
-                            return GenerateSwizzles(2, "float");
-                        case "Vector3":
-                            return GenerateSwizzles(3, "float");
-                        case "Vector4":
-                            return GenerateSwizzles(4, "float");
-
-                        case "Vector1D":
-                            return GenerateSwizzles(1, "double");
-                        case "Vector2D":
-                            return GenerateSwizzles(2, "double");
-                        case "Vector3D":
-                            return GenerateSwizzles(3, "double");
-                        case "Vector4D":
-                            return GenerateSwizzles(4, "double");
-
-                        case "Vector1I":
-                            return GenerateSwizzles(1, "int");
-                        case "Vector2I":
-                            return GenerateSwizzles(2, "int");
-                        case "Vector3I":
-                            return GenerateSwizzles(3, "int");
-                        case "Vector4I":
-                            return GenerateSwizzles(4, "int");
-
-                        case "Vector1UI":
-                            return GenerateSwizzles(1, "uint");
-                        case "Vector2UI":
-                            return GenerateSwizzles(2, "uint");
-                        case "Vector3UI":
-                            return GenerateSwizzles(3, "uint");
-                        case "Vector4UI":
-                            return GenerateSwizzles(4, "uint");
-
-                        case "Vector1B":
-                            return GenerateSwizzles(1, "bool");
-                        case "Vector2B":
-                            return GenerateSwizzles(2, "bool");
-                        case "Vector3B":
-                            return GenerateSwizzles(3, "bool");
-                        case "Vector4B":
-                            return GenerateSwizzles(4, "bool");
                     }
                 }
             }
