@@ -1,5 +1,9 @@
 ﻿namespace System;
 
+// For some reason, GitHub detects this file
+// as "Smalltalk" rather than "C#", it is
+// wildly confusing
+
 [Flags]
 public enum AttributeTargets
 {
@@ -18,7 +22,6 @@ public enum AttributeTargets
     Delegate =          0b001000000000000,
     ReturnValue =       0b010000000000000,
     GenericParameter =  0b100000000000000,
-
     All = Assembly
         | Module
         | Class
