@@ -76,9 +76,9 @@ internal class TranslationGenerator : ISourceGenerator
 
             context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
 
-            foreach ((string name, SourceText source) in translator.InternalGeneratedSourceText)
+            foreach (InternalGeneratorSource generatedSource in translator.InternalGeneratedSourceText)
             {
-                context.AddSource($"{structSymbol.Name}.InternalGenerator.{name}", source);
+                context.AddSource($"{structSymbol.Name}.InternalGenerator.{generatedSource.HintName}", generatedSource.Source);
             }
         }
 

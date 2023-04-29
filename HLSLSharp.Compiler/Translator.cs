@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Compiler.Generators;
 using HLSLSharp.Compiler.Generators.Internal.Vectors;
-using HLSLSharp.Compiler.SyntaxRewriters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -26,7 +25,7 @@ public class Translator
 
     internal readonly List<SyntaxNode> NodesAddedToShaderStruct = new List<SyntaxNode>();
 
-    internal IEnumerable<(string, SourceText)> InternalGeneratedSourceText = Enumerable.Empty<(string, SourceText)>();
+    internal IEnumerable<InternalGeneratorSource> InternalGeneratedSourceText = Enumerable.Empty<InternalGeneratorSource>();
 
     public Translator(SyntaxTree shaderSyntaxTree)
     {
@@ -40,45 +39,26 @@ public class Translator
 
         ShaderSemanticModel = Compilation.GetSemanticModel(ShaderSyntaxTree);
 
-        RewriteSource();
+        InternalGeneratedSourceText = GenerateInternalSource();
+
+        Compilation = Compilation
+            .AddSyntaxTrees(InternalGeneratedSourceText.Select(x => x.SyntaxTree));
 
         ShaderCompilationUnit = ShaderSyntaxTree.GetCompilationUnitRoot();
 
         ShaderSemanticModel = Compilation.GetSemanticModel(ShaderSyntaxTree);
     }
 
-    private void RewriteSource()
+    private IEnumerable<InternalGeneratorSource> GenerateInternalSource()
     {
-        SyntaxNode root = ShaderSyntaxTree.GetRoot();
+        IEnumerable<InternalGeneratorSource> newSources = Enumerable.Empty<InternalGeneratorSource>();
 
-        ComputeRewriter computeRewriter = new ComputeRewriter(ShaderSemanticModel);
+        newSources = newSources.Concat(ApplyGeneration<AliasGenerator>());
 
-        root = computeRewriter.Visit(root);
-
-        NodesAddedToShaderStruct.AddRange(computeRewriter.AddedNodes);
-
-        SyntaxTree oldTree = ShaderSyntaxTree;
-
-        ShaderSyntaxTree = ShaderSyntaxTree.WithRootAndOptions(root, ShaderSyntaxTree.Options);
-
-        IEnumerable<(SyntaxTree, (string, SourceText))> generated = GenerateInternalSource();
-
-        Compilation = Compilation.ReplaceSyntaxTree(oldTree, ShaderSyntaxTree)
-            .AddSyntaxTrees(generated.Select(x => x.Item1));
-
-        InternalGeneratedSourceText = generated.Select(x => x.Item2);
+        return newSources;
     }
 
-    private IEnumerable<(SyntaxTree, (string, SourceText))> GenerateInternalSource()
-    {
-        IEnumerable<(SyntaxTree, (string, SourceText))> newTrees = Enumerable.Empty<(SyntaxTree, (string, SourceText))>();
-
-        newTrees = newTrees.Concat(ApplyGeneration<AliasGenerator>());
-
-        return newTrees;
-    }
-
-    private IEnumerable<(SyntaxTree, (string, SourceText))> ApplyGeneration<T>() where T : IInternalGenerator, new()
+    private IEnumerable<InternalGeneratorSource> ApplyGeneration<T>() where T : IInternalGenerator, new()
     {
         IInternalGenerator generator = new T();
 
@@ -86,7 +66,7 @@ public class Translator
 
         generator.Execute(context);
 
-        return context.AdditionalSources.Select(x => (x.Value.Item1, (x.Key, x.Value.Item2)));
+        return context.AdditionalSources;
     }
 
     public EmitResult Emit()

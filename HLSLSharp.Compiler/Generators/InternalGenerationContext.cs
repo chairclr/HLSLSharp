@@ -11,7 +11,7 @@ internal struct InternalGenerationContext
 {
     public Compilation Compilation { get; }
 
-    public readonly Dictionary<string, (SyntaxTree, SourceText)> AdditionalSources = new Dictionary<string, (SyntaxTree, SourceText)>();
+    public readonly HashSet<InternalGeneratorSource> AdditionalSources = new HashSet<InternalGeneratorSource>();
 
     internal InternalGenerationContext(Compilation compilation)
     {
@@ -20,21 +20,25 @@ internal struct InternalGenerationContext
 
     public void AddSource(string hintName, string source)
     {
-        if (AdditionalSources.ContainsKey(hintName)) 
+        InternalGeneratorSource internalGeneratorSource = new InternalGeneratorSource(hintName, source);
+
+        if (AdditionalSources.Contains(internalGeneratorSource)) 
         {
             throw new ArgumentException("Generated source file names must be unique within a generator.", nameof(hintName));
         }
 
-        AdditionalSources.Add(hintName, (CSharpSyntaxTree.ParseText(source), SourceText.From(source, Encoding.Unicode)));
+        AdditionalSources.Add(internalGeneratorSource);
     }
 
     public void AddSource(string hintName, SourceText source)
     {
-        if (AdditionalSources.ContainsKey(hintName))
+        InternalGeneratorSource internalGeneratorSource = new InternalGeneratorSource(hintName, source);
+
+        if (AdditionalSources.Contains(internalGeneratorSource))
         {
             throw new ArgumentException("Generated source file names must be unique within a generator.", nameof(hintName));
         }
 
-        AdditionalSources.Add(hintName, (CSharpSyntaxTree.ParseText(source), source));
+        AdditionalSources.Add(internalGeneratorSource);
     }
 }

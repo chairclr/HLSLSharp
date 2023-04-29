@@ -18,7 +18,7 @@ public partial struct SuperSimpleCompute : IComputeShader
 }
 
 [ComputeShader(1, 1, 1)]
-public partial struct SuperSimpleCompute2 : IComputeShader
+public partial struct ComputeCopy : IComputeShader
 {
     [Kernel]
     public void Compute()
