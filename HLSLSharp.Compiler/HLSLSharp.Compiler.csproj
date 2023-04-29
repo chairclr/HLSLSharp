@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>Enable</Nullable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+    <IsRoslynComponent>true</IsRoslynComponent>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -12,15 +16,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="False" />
   </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\$(TargetFramework)\System.Runtime.dll" Link="Embedded Resources\System.Runtime.dll"></EmbeddedResource>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="Embedded Resources\" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\$(TargetFramework)\System.Runtime.dll" Link="Embedded Resources\System.Runtime.dll" />
+  </ItemGroup>
+  
 </Project>

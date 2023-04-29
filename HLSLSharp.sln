@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.CoreLib", "HLSLSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.CoreLib.Generator", "HLSLSharp.CoreLib.Generator\HLSLSharp.CoreLib.Generator.csproj", "{17BD2D06-BC55-4C05-9A84-6FA38B4F1CBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Tests", "HLSLSharp.Tests\HLSLSharp.Tests.csproj", "{382FA9C6-51FF-4B61-9877-5116677F1286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Tests", "HLSLSharp.Tests\HLSLSharp.Tests.csproj", "{382FA9C6-51FF-4B61-9877-5116677F1286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Tests.ShaderLibrary", "HLSLSharp.Tests.ShaderLibrary\HLSLSharp.Tests.ShaderLibrary.csproj", "{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{382FA9C6-51FF-4B61-9877-5116677F1286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{382FA9C6-51FF-4B61-9877-5116677F1286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{382FA9C6-51FF-4B61-9877-5116677F1286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

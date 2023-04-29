@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <EnsureRuntimePackageDependencies>false</EnsureRuntimePackageDependencies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" />
+  </ItemGroup>
+
+</Project>
