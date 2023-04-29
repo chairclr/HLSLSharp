@@ -6,9 +6,9 @@ public class CoreLibProvider
 {
     private static readonly string RuntimeResourceName = "HLSLSharp.Compiler.Embedded_Resources.System.Runtime.dll";
 
-    public PortableExecutableReference Reference;
+    public static PortableExecutableReference Reference;
 
-    public CoreLibProvider()
+    static CoreLibProvider()
     {
         Reference = MetadataReference.CreateFromStream(typeof(CoreLibProvider).Assembly.GetManifestResourceStream(RuntimeResourceName)!);
     }

@@ -1,74 +1,100 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using HLSLSharp.Compiler.Emit;
+using HLSLSharp.Compiler.Generators;
+using HLSLSharp.Compiler.Generators.Internal.Vectors;
 using HLSLSharp.Compiler.SyntaxRewriters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace HLSLSharp.Compiler;
 
 public class Translator
 {
-    public SyntaxTree SyntaxTree { get; protected set; }
-
-    protected CompilationUnitSyntax CompilationUnit;
-
     protected CSharpCompilation Compilation;
 
-    protected SemanticModel SemanticModel;
+    public SyntaxTree ShaderSyntaxTree { get; protected set; }
 
-    protected readonly CoreLibProvider CoreLib;
+    protected CompilationUnitSyntax ShaderCompilationUnit;
 
-    public readonly List<SyntaxNode> NodesAddedToStruct = new List<SyntaxNode>();
+    protected SemanticModel ShaderSemanticModel;
 
-#pragma warning disable CS8618
-    public Translator(SyntaxTree syntaxTree)
-#pragma warning restore CS8618
+    internal readonly List<SyntaxNode> NodesAddedToShaderStruct = new List<SyntaxNode>();
+
+    internal IEnumerable<(string, SourceText)> InternalGeneratedSourceText = Enumerable.Empty<(string, SourceText)>();
+
+    public Translator(SyntaxTree shaderSyntaxTree)
     {
-        CoreLib = new CoreLibProvider();
+        ShaderSyntaxTree = shaderSyntaxTree;
 
-        SyntaxTree = syntaxTree;
+        ShaderCompilationUnit = ShaderSyntaxTree.GetCompilationUnitRoot();
 
-        CompilationUnit = SyntaxTree.GetCompilationUnitRoot();
+        Compilation = CSharpCompilation.Create($"__Translation")
+            .AddReferences(CoreLibProvider.Reference)
+            .AddSyntaxTrees(ShaderSyntaxTree);
 
-        CreateSemanticModel();
+        ShaderSemanticModel = Compilation.GetSemanticModel(ShaderSyntaxTree);
 
         RewriteSource();
 
-        CompilationUnit = SyntaxTree.GetCompilationUnitRoot();
+        ShaderCompilationUnit = ShaderSyntaxTree.GetCompilationUnitRoot();
 
-        CreateSemanticModel();
+        ShaderSemanticModel = Compilation.GetSemanticModel(ShaderSyntaxTree);
     }
 
     private void RewriteSource()
     {
-        SyntaxNode root = SyntaxTree.GetRoot();
+        SyntaxNode root = ShaderSyntaxTree.GetRoot();
 
-        ComputeRewriter computeRewriter = new ComputeRewriter(SemanticModel);
+        ComputeRewriter computeRewriter = new ComputeRewriter(ShaderSemanticModel);
 
         root = computeRewriter.Visit(root);
 
-        NodesAddedToStruct.AddRange(computeRewriter.AddedNodes);
+        NodesAddedToShaderStruct.AddRange(computeRewriter.AddedNodes);
 
-        SyntaxTree = SyntaxTree.WithRootAndOptions(root, SyntaxTree.Options);
+        SyntaxTree oldTree = ShaderSyntaxTree;
+
+        ShaderSyntaxTree = ShaderSyntaxTree.WithRootAndOptions(root, ShaderSyntaxTree.Options);
+
+        IEnumerable<(SyntaxTree, (string, SourceText))> generated = GenerateInternalSource();
+
+        Compilation = Compilation.ReplaceSyntaxTree(oldTree, ShaderSyntaxTree)
+            .AddSyntaxTrees(generated.Select(x => x.Item1));
+
+        InternalGeneratedSourceText = generated.Select(x => x.Item2);
     }
 
-    private void CreateSemanticModel()
+    private IEnumerable<(SyntaxTree, (string, SourceText))> GenerateInternalSource()
     {
-        Compilation = CSharpCompilation.Create($"__Translation")
-            .AddReferences(CoreLib.Reference)
-            .AddSyntaxTrees(SyntaxTree);
+        IEnumerable<(SyntaxTree, (string, SourceText))> newTrees = Enumerable.Empty<(SyntaxTree, (string, SourceText))>();
 
-        SemanticModel = Compilation.GetSemanticModel(SyntaxTree);
+        newTrees = newTrees.Concat(ApplyGeneration<AliasGenerator>());
+
+        return newTrees;
+    }
+
+    private IEnumerable<(SyntaxTree, (string, SourceText))> ApplyGeneration<T>() where T : IInternalGenerator, new()
+    {
+        IInternalGenerator generator = new T();
+
+        InternalGenerationContext context = new InternalGenerationContext(Compilation);
+
+        generator.Execute(context);
+
+        return context.AdditionalSources.Select(x => (x.Value.Item1, (x.Key, x.Value.Item2)));
     }
 
     public EmitResult Emit()
     {
-        HLSLEmitter emitter = new HLSLEmitter(SyntaxTree, CompilationUnit, Compilation, SemanticModel);
+        HLSLEmitter emitter = new HLSLEmitter(Compilation, ShaderSyntaxTree, ShaderCompilationUnit, ShaderSemanticModel);
 
         emitter.EmitHLSLSource();
 
-        return new EmitResult(emitter.GetSource(), SemanticModel.GetDiagnostics(), SemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
+        return new EmitResult(emitter.GetSource(), ShaderSemanticModel.GetDiagnostics(), ShaderSemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
     }
 }

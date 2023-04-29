@@ -54,51 +54,9 @@ public class AliasGenerator : IIncrementalGenerator
         {
             StringBuilder sb = new StringBuilder();
 
-            if (aliasInfo.Namespace is not null)
-            {
-                sb.AppendLine($"namespace {aliasInfo.Namespace};");
-            }
-
-            // Generate some documentation
-            string vectorDimensionNumbers = string.Concat(aliasInfo.GenericVectorTypeName.SkipWhile(x => !char.IsNumber(x)));
-
-            if (int.TryParse(vectorDimensionNumbers, out int dimension))
-            {
-                sb.AppendLine("/// <summary>");
-                sb.AppendLine($"/// Represents a {dimension}-dimensional vector of <see cref=\"{aliasInfo.GenericType}\"/>");
-                sb.AppendLine("/// </summary>");
-            }
-
-            sb.AppendLine($"public partial class {aliasInfo.NewVectorTypeName} : {aliasInfo.GenericVectorTypeName}<{aliasInfo.GenericType}>");
-            sb.AppendLine("{");
-            sb.AppendLine("");
-            sb.AppendLine("}");
+            sb.AppendLine($"global using {aliasInfo.NewVectorTypeName} = System.{aliasInfo.GenericVectorTypeName}<{aliasInfo.GenericType}>;");
 
             spc.AddSource($"Alias.{aliasInfo.Namespace}.{aliasInfo.NewVectorTypeName}.g.cs", sb.ToString());
-
-            sb.Clear();
-
-            if (aliasInfo.Namespace is not null)
-            {
-                sb.AppendLine($"namespace {aliasInfo.Namespace};");
-            }
-
-            sb.AppendLine($"public partial class {aliasInfo.GenericVectorTypeName}<T>");
-            sb.AppendLine("{");
-            sb.AppendLine($$"""
-                           public static implicit operator {{aliasInfo.NewVectorTypeName}}({{aliasInfo.GenericVectorTypeName}}<T> rhs)
-                           {
-                               return ({{aliasInfo.NewVectorTypeName}})rhs;
-                           }
-
-                           public static implicit operator {{aliasInfo.GenericVectorTypeName}}<T>({{aliasInfo.NewVectorTypeName}} rhs)
-                           {
-                               return ({{aliasInfo.GenericVectorTypeName}}<T>)rhs;
-                           }
-                           """);
-            sb.AppendLine("}");
-
-            spc.AddSource($"AliasConversion.{aliasInfo.Namespace}.{aliasInfo.NewVectorTypeName}.g.cs", sb.ToString());
         });
     }
 

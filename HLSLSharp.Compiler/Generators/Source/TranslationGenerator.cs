@@ -7,8 +7,9 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
-namespace HLSLSharp.Compiler.Generators;
+namespace HLSLSharp.Compiler.Generators.Source;
 
 [Generator(LanguageNames.CSharp)]
 internal class TranslationGenerator : ISourceGenerator
@@ -54,7 +55,7 @@ internal class TranslationGenerator : ISourceGenerator
             sb.AppendLine($"partial struct {structSymbol.Name}");
             sb.AppendLine($"{{");
 
-            foreach (SyntaxNode addedNode in translator.NodesAddedToStruct)
+            foreach (SyntaxNode addedNode in translator.NodesAddedToShaderStruct)
             {
                 sb.AppendLine(addedNode.ToFullString());
             }
@@ -74,7 +75,13 @@ internal class TranslationGenerator : ISourceGenerator
             sb.AppendLine($"}}");
 
             context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
+
+            foreach ((string name, SourceText source) in translator.InternalGeneratedSourceText)
+            {
+                context.AddSource($"{structSymbol.Name}.InternalGenerator.{name}", source);
+            }
         }
+
     }
 
     public void Initialize(GeneratorInitializationContext context)

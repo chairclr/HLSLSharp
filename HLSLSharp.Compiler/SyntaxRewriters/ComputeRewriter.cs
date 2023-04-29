@@ -31,12 +31,7 @@ internal class ComputeRewriter : SourceRewriter
         FieldDeclarationSyntax field =
             FieldDeclaration(
                 VariableDeclaration(
-                    QualifiedName(
-                        AliasQualifiedName(
-                            IdentifierName(
-                                Token(SyntaxKind.GlobalKeyword)),
-                            IdentifierName("System")),
-                        IdentifierName("Vector3I")))
+                    IdentifierName("Vector3UI"))
                 .WithVariables(
                     SingletonSeparatedList(
                         VariableDeclarator(

@@ -11,25 +11,25 @@ namespace HLSLSharp.Compiler.Emit;
 
 internal partial class HLSLEmitter
 {
-    private readonly SyntaxTree SyntaxTree;
-
-    private readonly CompilationUnitSyntax CompilationUnit;
-
     private readonly CSharpCompilation Compilation;
 
-    private readonly SemanticModel SemanticModel;
+    private readonly SyntaxTree ShaderSyntaxTree;
+
+    private readonly CompilationUnitSyntax ShaderCompilationUnit;
+
+    private readonly SemanticModel ShaderSemanticModel;
 
     private readonly StringBuilder SourceBuilder;
 
-    public HLSLEmitter(SyntaxTree syntaxTree, CompilationUnitSyntax compilationUnit, CSharpCompilation compilation, SemanticModel semanticModel)
+    public HLSLEmitter(CSharpCompilation compilation, SyntaxTree shaderSyntaxTree, CompilationUnitSyntax sahderCompilationUnit, SemanticModel shaderSemanticModel)
     {
-        SyntaxTree = syntaxTree;
+        ShaderSyntaxTree = shaderSyntaxTree;
 
-        CompilationUnit = compilationUnit;
+        ShaderCompilationUnit = sahderCompilationUnit;
 
         Compilation = compilation;
 
-        SemanticModel = semanticModel;
+        ShaderSemanticModel = shaderSemanticModel;
 
         SourceBuilder = new StringBuilder();
     }

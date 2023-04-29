@@ -20,12 +20,12 @@ internal partial class HLSLEmitter
 
     private void CacheComputeTranslationInfo()
     {
-        ComputeShaderAttributeSymbol ??= SemanticModel.Compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
+        ComputeShaderAttributeSymbol ??= ShaderSemanticModel.Compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
 
-        IEnumerable<StructDeclarationSyntax> structDeclarations = CompilationUnit.DescendantNodes().OfType<StructDeclarationSyntax>();
+        IEnumerable<StructDeclarationSyntax> structDeclarations = ShaderCompilationUnit.DescendantNodes().OfType<StructDeclarationSyntax>();
 
         IEnumerable<INamedTypeSymbol> structsWithAttribute = structDeclarations
-            .Select(x => (INamedTypeSymbol)SemanticModel.GetDeclaredSymbol(x)!)
+            .Select(x => (INamedTypeSymbol)ShaderSemanticModel.GetDeclaredSymbol(x)!)
             .Where(x => x!.GetAttributes().Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, ComputeShaderAttributeSymbol)));
 
         IEnumerable<ComputeStructTranslationInfo> structTranslationInfos = structsWithAttribute

@@ -45,11 +45,11 @@ public class BasicCompilerTests
                             [Kernel]
                             public void Compute()
                             {
-                                Vector3I threadIdCopy = ThreadId;
+                                Vector3UI threadIdCopy = ThreadId;
 
-                                Vector2I threadIdXY = (Vector2I)ThreadId.XY;
+                                Vector2UI threadIdXY = ThreadId.XY;
 
-                                int threadIdX = ThreadId.X;
+                                uint threadIdX = ThreadId.X;
                             }
                          }
                          """;
