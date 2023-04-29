@@ -11,4 +11,16 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\$(TargetFramework)\System.Runtime.dll" Link="Embedded Resources\System.Runtime.dll"></EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Embedded Resources\" />
+  </ItemGroup>
+
 </Project>

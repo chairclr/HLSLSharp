@@ -29,6 +29,7 @@
     <Compile Include="System\Enum.cs" />
     <Compile Include="System\FlagsAttribute.cs" />
     <Compile Include="System\IFloatable.cs" />
+    <Compile Include="System\Intrinsics.cs" />
     <Compile Include="System\IVector.cs" />
     <Compile Include="System\Scalar.cs" />
     <Compile Include="System\IScalar.cs" />
@@ -42,6 +43,11 @@
     <Compile Include="System\Reflection\AssemblyVersionAttribute.cs" />
     <Compile Include="System\Reflection\DefaultMemberAttribute.cs.cs" />
     <Compile Include="System\Runtime\Versioning\TargetFrameworkAttribute.cs" />
+    <Compile Include="System\Shaders\ComputeShaderAttribute.cs" />
+    <Compile Include="System\Shaders\IComputeShader.cs" />
+    <Compile Include="System\Shaders\KernelAttribute.cs" />
+    <Compile Include="System\Shaders\Registers\RegisterAttribute.cs" />
+    <Compile Include="System\Shaders\Registers\RegisterType.cs" />
     <Compile Include="System\ValueType.cs" />
     <Compile Include="System\Vector.cs" />
     <Compile Include="System\Void.cs" />

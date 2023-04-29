@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build-solution:
+  build-and-test:
   
     strategy:
       matrix:
@@ -29,3 +29,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore /p:Configuration=${{matrix.configuration}}
+    - name: Test
+      run: dotnet test --verbosity minimal /p:Configuration=${{matrix.configuration}}
