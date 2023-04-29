@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Compiler.SyntaxRewriters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -59,6 +60,10 @@ public abstract class Translator
 
     public EmitResult Emit()
     {
-        return new EmitResult(null, SemanticModel.GetDiagnostics(), SemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
+        HLSLEmitter emitter = new HLSLEmitter(SyntaxTree, CompilationUnit, Compilation, SemanticModel);
+
+        emitter.EmitHLSLSource();
+
+        return new EmitResult(emitter.GetSource(), SemanticModel.GetDiagnostics(), SemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
     }
 }

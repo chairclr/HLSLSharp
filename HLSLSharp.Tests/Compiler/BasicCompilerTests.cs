@@ -40,7 +40,7 @@ public class BasicCompilerTests
                          using System.Shaders;
 
                          [ComputeShader(1, 1, 1)]
-                         public partial struct EmptyCompute : IComputeShader
+                         public partial struct SuperSimpleCompute : IComputeShader
                          {
                             [Kernel]
                             public void Compute()
