@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Xml.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace HLSLSharp.Compiler.Generators;
+
+[Generator(LanguageNames.CSharp)]
+internal class TranslationGenerator : ISourceGenerator
+{
+    private static readonly string ComputeShaderAttributeFullName = "System.Shaders.ComputeShaderAttribute";
+
+    public void Execute(GeneratorExecutionContext context)
+    {
+        Compilation compilation = context.Compilation;
+
+        INamedTypeSymbol computeShaderAttributeSymbol = compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
+
+        IEnumerable<StructDeclarationSyntax> structNodes = compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>());
+
+        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node => 
+            compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
+            .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
+
+        foreach (StructDeclarationSyntax structDeclarationSyntax in computeStructNodes)
+        {
+            SyntaxTree tree = structDeclarationSyntax.SyntaxTree;
+
+            SemanticModel semanticModel = compilation.GetSemanticModel(tree);
+
+            INamedTypeSymbol structSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(structDeclarationSyntax)!;
+
+            Translator translator = new Translator(tree);
+
+            EmitResult result = translator.Emit();
+
+            foreach (Diagnostic diag in result.Diagnostics)
+            {
+                context.ReportDiagnostic(diag);
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(structSymbol.ContainingNamespace.Name))
+            {
+                sb.AppendLine($"namespace {structSymbol.ContainingNamespace};");
+            }
+
+            sb.AppendLine($"partial struct {structSymbol.Name}");
+            sb.AppendLine($"{{");
+
+            foreach (SyntaxNode addedNode in translator.NodesAddedToStruct)
+            {
+                sb.AppendLine(addedNode.ToFullString());
+            }
+
+            sb.AppendLine($"    public static string GetHLSLSource()");
+            sb.AppendLine($"    {{");
+            sb.AppendLine($"""""
+                                    return 
+                                        """"
+                                        {result.Result}
+                                        """";
+                            """"");
+            sb.AppendLine($"    }}");
+
+
+
+            sb.AppendLine($"}}");
+
+            context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
+        }
+    }
+
+    public void Initialize(GeneratorInitializationContext context)
+    {
+        
+    }
+}

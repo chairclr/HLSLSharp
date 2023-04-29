@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Compiler.SyntaxRewriters;
 using Microsoft.CodeAnalysis;
@@ -7,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Compiler;
 
-public abstract class Translator
+public class Translator
 {
-    protected SyntaxTree SyntaxTree;
+    public SyntaxTree SyntaxTree { get; protected set; }
 
     protected CompilationUnitSyntax CompilationUnit;
 
@@ -18,6 +19,8 @@ public abstract class Translator
     protected SemanticModel SemanticModel;
 
     protected readonly CoreLibProvider CoreLib;
+
+    public readonly List<SyntaxNode> NodesAddedToStruct = new List<SyntaxNode>();
 
 #pragma warning disable CS8618
     public Translator(SyntaxTree syntaxTree)
@@ -45,6 +48,8 @@ public abstract class Translator
         ComputeRewriter computeRewriter = new ComputeRewriter(SemanticModel);
 
         root = computeRewriter.Visit(root);
+
+        NodesAddedToStruct.AddRange(computeRewriter.AddedNodes);
 
         SyntaxTree = SyntaxTree.WithRootAndOptions(root, SyntaxTree.Options);
     }

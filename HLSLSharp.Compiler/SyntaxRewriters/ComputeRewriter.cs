@@ -31,7 +31,12 @@ internal class ComputeRewriter : SourceRewriter
         FieldDeclarationSyntax field =
             FieldDeclaration(
                 VariableDeclaration(
-                    IdentifierName("Vector3I"))
+                    QualifiedName(
+                        AliasQualifiedName(
+                            IdentifierName(
+                                Token(SyntaxKind.GlobalKeyword)),
+                            IdentifierName("System")),
+                        IdentifierName("Vector3I")))
                 .WithVariables(
                     SingletonSeparatedList(
                         VariableDeclarator(
@@ -44,6 +49,8 @@ internal class ComputeRewriter : SourceRewriter
             .NormalizeWhitespace();
 
         node = node.AddMembers(field);
+
+        RegisterNewMember(field);
 
         return base.VisitStructDeclaration(node);
     }

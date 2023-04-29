@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HLSLSharp.Compiler\HLSLSharp.Compiler.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" />
   </ItemGroup>
 

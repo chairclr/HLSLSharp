@@ -8,11 +8,12 @@ public partial struct SuperSimpleCompute : IComputeShader
 {
     [Kernel]
     public void Compute()
-    {
+    { 
         Vector3I threadIdCopy = ThreadId;
 
-        Vector2I threadIdXY = (Vector2I)ThreadId.XY;
+        Vector2I threadIdXY = ThreadId.XY;
 
         int threadIdX = ThreadId.X;
+
     }
 }
