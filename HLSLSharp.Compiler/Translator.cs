@@ -1,5 +1,5 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Linq;
+using HLSLSharp.Compiler.SyntaxRewriters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -8,24 +8,48 @@ namespace HLSLSharp.Compiler;
 
 public abstract class Translator
 {
-    protected readonly SyntaxTree SyntaxTree;
+    protected SyntaxTree SyntaxTree;
 
-    protected readonly CompilationUnitSyntax CompilationUnit;
+    protected CompilationUnitSyntax CompilationUnit;
 
-    protected readonly CSharpCompilation Compilation;
+    protected CSharpCompilation Compilation;
 
-    protected readonly SemanticModel SemanticModel;
+    protected SemanticModel SemanticModel;
 
     protected readonly CoreLibProvider CoreLib;
 
+#pragma warning disable CS8618
     public Translator(SyntaxTree syntaxTree)
+#pragma warning restore CS8618
     {
         CoreLib = new CoreLibProvider();
 
         SyntaxTree = syntaxTree;
 
-        CompilationUnit = syntaxTree.GetCompilationUnitRoot();
+        CompilationUnit = SyntaxTree.GetCompilationUnitRoot();
 
+        CreateSemanticModel();
+
+        RewriteSource();
+
+        CompilationUnit = SyntaxTree.GetCompilationUnitRoot();
+
+        CreateSemanticModel();
+    }
+
+    private void RewriteSource()
+    {
+        SyntaxNode root = SyntaxTree.GetRoot();
+
+        ComputeRewriter computeRewriter = new ComputeRewriter(SemanticModel);
+
+        root = computeRewriter.Visit(root);
+
+        SyntaxTree = SyntaxTree.WithRootAndOptions(root, SyntaxTree.Options);
+    }
+
+    private void CreateSemanticModel()
+    {
         Compilation = CSharpCompilation.Create($"__Translation")
             .AddReferences(CoreLib.Reference)
             .AddSyntaxTrees(SyntaxTree);
