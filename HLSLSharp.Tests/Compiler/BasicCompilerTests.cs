@@ -23,7 +23,7 @@ public class BasicCompilerTests
                          }
                          """;
 
-        SourceTranslator translator = new SourceTranslator(source);
+        SourceTranslator translator = new SourceTranslator(source, "EmptyCompute");
 
         EmitResult result = translator.Emit();
 
@@ -54,7 +54,7 @@ public class BasicCompilerTests
                          }
                          """;
 
-        SourceTranslator translator = new SourceTranslator(source);
+        SourceTranslator translator = new SourceTranslator(source, "SuperSimpleCompute");
 
         EmitResult result = translator.Emit();
 

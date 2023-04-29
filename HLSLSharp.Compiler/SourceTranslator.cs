@@ -2,11 +2,11 @@
 
 namespace HLSLSharp.Compiler;
 
-public class SourceTranslator : Translator
+public class SourceTranslator : TopLevelTranslator
 {
-    public SourceTranslator(string source)
-        : base(CSharpSyntaxTree.ParseText(source))
+    public SourceTranslator(string source, string shaderStructFullyQualifiedName)
+        : base(CSharpSyntaxTree.ParseText(source), shaderStructFullyQualifiedName)
     {
-
+        
     }
 }

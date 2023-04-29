@@ -18,6 +18,10 @@ internal class TranslationGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
+
+        if (!Debugger.IsAttached)
+            Debugger.Launch();
+
         Compilation compilation = context.Compilation;
 
         INamedTypeSymbol computeShaderAttributeSymbol = compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
@@ -36,7 +40,7 @@ internal class TranslationGenerator : ISourceGenerator
 
             INamedTypeSymbol structSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(structDeclarationSyntax)!;
 
-            Translator translator = new Translator(tree);
+            SourceGeneratorTranslator translator = new SourceGeneratorTranslator(tree, structSymbol);
 
             EmitResult result = translator.Emit();
 

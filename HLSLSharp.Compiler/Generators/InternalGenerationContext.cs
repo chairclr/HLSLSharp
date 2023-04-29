@@ -11,11 +11,17 @@ internal struct InternalGenerationContext
 {
     public Compilation Compilation { get; }
 
+    public SyntaxTree ShaderSyntaxTree { get; }
+
+    public INamedTypeSymbol ShaderStructType { get; }
+
     public readonly HashSet<InternalGeneratorSource> AdditionalSources = new HashSet<InternalGeneratorSource>();
 
-    internal InternalGenerationContext(Compilation compilation)
+    internal InternalGenerationContext(Compilation compilation, SyntaxTree shaderSyntaxTree, INamedTypeSymbol shaderStructType)
     {
         Compilation = compilation;
+        ShaderSyntaxTree = shaderSyntaxTree;
+        ShaderStructType = shaderStructType;
     }
 
     public void AddSource(string hintName, string source)
