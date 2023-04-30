@@ -23,6 +23,10 @@
     <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="False" />
   </ItemGroup>-->
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet build &quot;$(SolutionDir)\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj&quot; /p:$(Configuration)" />
+  </Target>
+
   <ItemGroup>
     <Folder Include="Embedded Resources\" />
   </ItemGroup>
@@ -31,8 +35,4 @@
     <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\net7.0\HLSLSharp.CoreLib.dll" Link="Embedded Resources\HLSLSharp.CoreLib.dll" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet build &quot;$(SolutionDir)\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj&quot; /p:$(Configuration)" />
-  </Target>
-  
 </Project>
