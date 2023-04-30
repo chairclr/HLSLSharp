@@ -1,4 +1,6 @@
-﻿using HLSLSharp.CoreLib;
+﻿using System.Numerics;
+using System.Threading;
+using HLSLSharp.CoreLib;
 using HLSLSharp.CoreLib.Shaders;
 
 namespace HLSLSharp.Tests.ShaderLibrary;
@@ -27,5 +29,21 @@ public partial struct ComputeCopy : IComputeShader
     public void Compute()
     {
         Vector3UI yxz = ThreadId.YXZ;
+    }
+}
+
+[ComputeShader(1, 1, 1)]
+public partial struct NotSoShrimple : IComputeShader
+{
+    [Kernel]
+    public void Compute()
+    {
+        float s = (float)ThreadId.X;
+
+        float sqrtS = Intrinsics.Sqrt(s);
+
+        Vector2 v = new Vector2((float)ThreadId.X, (float)ThreadId.Y);
+
+        float sqrtV = Intrinsics.Sqrt(v);
     }
 }

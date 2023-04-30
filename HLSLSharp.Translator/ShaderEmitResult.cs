@@ -7,14 +7,17 @@ public class ShaderEmitResult
 {
     public string? Result;
 
-    public ImmutableArray<Diagnostic> Diagnostics { get; }
+    public string FullyQualifiedShaderTypeName;
 
-    public bool IsError { get; }
+    public readonly ImmutableArray<Diagnostic> Diagnostics;
 
-    internal ShaderEmitResult(string? result, ImmutableArray<Diagnostic> diagnostics, bool isError)
+    public readonly bool Success;
+
+    internal ShaderEmitResult(string? result, INamedTypeSymbol shaderType, ImmutableArray<Diagnostic> diagnostics, bool success)
     {
         Result = result;
         Diagnostics = diagnostics;
-        IsError = isError;
+        Success = success;
+        FullyQualifiedShaderTypeName = $"{shaderType.ContainingNamespace}.{shaderType.MetadataName}";
     }
 }

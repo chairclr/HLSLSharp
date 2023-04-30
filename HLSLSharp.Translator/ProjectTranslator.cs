@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using HLSLSharp.Compiler;
 using HLSLSharp.Compiler.Generators;
@@ -88,7 +89,21 @@ public abstract class ProjectTranslator
 
     public ProjectEmitResult Emit()
     {
-        return new ProjectEmitResult(new List<Compiler.ShaderEmitResult>(), Diagnostics);
+        INamedTypeSymbol computeShaderAttributeSymbol = Compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
+
+        IEnumerable<StructDeclarationSyntax> structNodes = Compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>());
+
+        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node =>
+            Compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
+            .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
+
+        List<INamedTypeSymbol> computeShaderTypes = computeStructNodes
+            .Select(x => Compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!)
+            .Distinct(SymbolEqualityComparer.Default)
+            .Select(x => (INamedTypeSymbol)x!)
+            .ToList();
+
+        return new ProjectEmitResult(computeShaderTypes.Select(x => new ShaderEmitResult(null, x, ImmutableArray<Diagnostic>.Empty, false)).ToList(), Diagnostics);
     }
 
     private void GenerateProjectSource()

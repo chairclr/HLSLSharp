@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using HLSLSharp.Translator;
 using Microsoft.CodeAnalysis;
@@ -15,6 +17,7 @@ namespace HLSLSharp.Compiler.Generators.Roslyn;
 [Generator(LanguageNames.CSharp)]
 internal class TranslationGenerator : ISourceGenerator
 {
+    private static readonly string ComputeShaderAttributeFullName = "HLSLSharp.CoreLib.Shaders.ComputeShaderAttribute";
 
     public void Execute(GeneratorExecutionContext context)
     {
@@ -32,6 +35,44 @@ internal class TranslationGenerator : ISourceGenerator
         foreach (Diagnostic diagnostic in result.AllDiagnostics)
         {
             context.ReportDiagnostic(diagnostic);
+        }
+
+        INamedTypeSymbol computeShaderAttributeSymbol = compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
+
+        IEnumerable<StructDeclarationSyntax> structNodes = compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>());
+
+        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node =>
+            compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
+            .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
+
+        List<INamedTypeSymbol> computeShaderTypes = computeStructNodes
+            .Select(x => compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!)
+            .ToList();
+
+        StringBuilder sb = new StringBuilder();
+
+        foreach (INamedTypeSymbol shaderType in computeShaderTypes)
+        {
+            sb.Clear();
+
+            if (!shaderType.ContainingNamespace.IsGlobalNamespace)
+            {
+                sb.AppendLine($"namespace {shaderType.ContainingNamespace};");
+            }
+
+            sb.AppendLine($"partial struct {shaderType.Name}");
+            sb.AppendLine($"{{");
+            sb.AppendLine($"    public static string GetHLSLSource()");
+            sb.AppendLine($"    {{");
+            sb.AppendLine($""""
+                                    return """
+                                           {result.ShaderEmitResults.Single(x => x.FullyQualifiedShaderTypeName == $"{shaderType.ContainingNamespace}.{shaderType.MetadataName}").Result}
+                                           """;
+                            """");
+            sb.AppendLine($"    }}");
+            sb.AppendLine($"}}");
+
+            context.AddSource($"Source.{shaderType.MetadataName}.g.cs", sb.ToString());
         }
     }
 

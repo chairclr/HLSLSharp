@@ -10,6 +10,7 @@
       - Internal
         - Custom "Source Generation" framework
         - Applies custom source generators to C# source code before it is translated
-      - Roslyn
-        - Roslyn source generators to project source code
+		- Once-per-project source generators
+		- Once-per-shader source generators
+
    - Translators
