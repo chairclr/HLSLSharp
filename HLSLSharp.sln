@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp", "HLSLSharp\HLSLSharp.csproj", "{B012E56C-562B-4F97-998F-A78B8ECEF1F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Compiler", "HLSLSharp.Compiler\HLSLSharp.Compiler.csproj", "{BB81AF92-C4BC-4944-B046-7BDAE07657CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Translator", "HLSLSharp.Compiler\HLSLSharp.Translator.csproj", "{BB81AF92-C4BC-4944-B046-7BDAE07657CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Runtime", "HLSLSharp.Runtime\HLSLSharp.Runtime.csproj", "{F5C0C4D2-91FE-4793-9245-C03C130A07B1}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.CoreLib.Generator
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Tests", "HLSLSharp.Tests\HLSLSharp.Tests.csproj", "{382FA9C6-51FF-4B61-9877-5116677F1286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLSLSharp.Tests.ShaderLibrary", "HLSLSharp.Tests.ShaderLibrary\HLSLSharp.Tests.ShaderLibrary.csproj", "{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSLSharp.Tests.ShaderLibrary", "HLSLSharp.Tests.ShaderLibrary\HLSLSharp.Tests.ShaderLibrary.csproj", "{D8D253E3-87F1-4BC1-B67A-8ED6698556F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,7 +4,7 @@ namespace HLSLSharp.Compiler;
 
 public class CoreLibProvider
 {
-    private static readonly string RuntimeResourceName = "HLSLSharp.Compiler.Embedded_Resources.System.Runtime.dll";
+    private static readonly string RuntimeResourceName = "HLSLSharp.Translator.Embedded_Resources.System.Runtime.dll";
 
     public static PortableExecutableReference Reference;
 
