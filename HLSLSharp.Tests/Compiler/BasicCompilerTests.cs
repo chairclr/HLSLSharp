@@ -1,4 +1,5 @@
 ﻿using HLSLSharp.Compiler;
+using HLSLSharp.Translator;
 using Microsoft.CodeAnalysis;
 
 namespace HLSLSharp.Tests.Compiler;
@@ -9,8 +10,8 @@ public class BasicCompilerTests
     public void EmptyComputeCompilation()
     {
         string source = $$"""
-                         using System;
-                         using System.Shaders;
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
 
                          [ComputeShader(1, 1, 1)]
                          public partial struct EmptyCompute : IComputeShader
@@ -25,21 +26,19 @@ public class BasicCompilerTests
 
         SourceTranslator translator = new SourceTranslator(source);
 
-        //EmitResult result = translator.Emit();
+        ProjectEmitResult result = translator.Emit();
 
-        //LogDiagnostics(result);
+        LogDiagnostics(result);
 
-        //Assert.That(result.IsError, Is.False);
-
-        Assert.Pass();
+        Assert.That(result.Success, Is.True);
     }
 
     [Test]
     public void SimpleComputeCompilation()
     {
         string source = $$"""
-                         using System;
-                         using System.Shaders;
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
 
                          [ComputeShader(1, 1, 1)]
                          public partial struct SuperSimpleCompute : IComputeShader
@@ -58,18 +57,16 @@ public class BasicCompilerTests
 
         SourceTranslator translator = new SourceTranslator(source);
 
-        //EmitResult result = translator.Emit();
+        ProjectEmitResult result = translator.Emit();
 
-        //LogDiagnostics(result);
+        LogDiagnostics(result);
 
-        //Assert.That(result.IsError, Is.False);
-
-        Assert.Pass();
+        Assert.That(result.Success, Is.True);
     }
 
-    public void LogDiagnostics(EmitResult result)
+    public void LogDiagnostics(ProjectEmitResult result)
     {
-        foreach (Diagnostic diagnostic in result.Diagnostics)
+        foreach (Diagnostic diagnostic in result.AllDiagnostics)
         {
             Console.WriteLine(diagnostic.ToString());
         }

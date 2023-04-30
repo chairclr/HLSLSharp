@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace HLSLSharp.Compiler;
 
-public class EmitResult
+public class ShaderEmitResult
 {
     public string? Result;
 
@@ -11,7 +11,7 @@ public class EmitResult
 
     public bool IsError { get; }
 
-    internal EmitResult(string? result, ImmutableArray<Diagnostic> diagnostics, bool isError)
+    internal ShaderEmitResult(string? result, ImmutableArray<Diagnostic> diagnostics, bool isError)
     {
         Result = result;
         Diagnostics = diagnostics;

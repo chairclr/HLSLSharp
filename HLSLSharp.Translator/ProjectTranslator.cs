@@ -22,18 +22,32 @@ public abstract class ProjectTranslator
             ReportDiagnostic(Diagnostic.Create(HLSLDiagnosticDescriptors.MissingOrInvalidCoreLibReference, null));
         }
 
-
+        foreach (Diagnostic diagnostic in Compilation.GetDiagnostics())
+        {
+            ReportDiagnostic(diagnostic);
+        }
     }
 
     public ProjectTranslator(SyntaxTree singleTree)
     {
-        Compilation = CSharpCompilation.Create($"__Translation")
+        Compilation = CSharpCompilation.Create($"__Translation", options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+            .AddReferences(SystemReferenceProvider.References)
             .AddReferences(CoreLibProvider.Reference)
             .AddSyntaxTrees(singleTree);
+
+        foreach (Diagnostic diagnostic in Compilation.GetDiagnostics())
+        {
+            ReportDiagnostic(diagnostic);
+        }
     }
 
     protected void ReportDiagnostic(Diagnostic diagnostic)
     {
         Diagnostics.Add(diagnostic);
+    }
+
+    public ProjectEmitResult Emit()
+    {
+        return new ProjectEmitResult(new System.Collections.Generic.List<Compiler.ShaderEmitResult>(), Diagnostics);
     }
 }

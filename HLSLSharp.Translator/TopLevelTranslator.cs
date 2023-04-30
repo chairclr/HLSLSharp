@@ -122,12 +122,12 @@ public class TopLevelTranslator
         return context.AdditionalSources;
     }
 
-    public EmitResult Emit()
+    public ShaderEmitResult Emit()
     {
         HLSLEmitter emitter = new HLSLEmitter(Compilation, ShaderSyntaxTree, ShaderCompilationUnit, ShaderSemanticModel);
 
         emitter.EmitHLSLSource();
 
-        return new EmitResult(emitter.GetSource(), ShaderSemanticModel.GetDiagnostics(), ShaderSemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
+        return new ShaderEmitResult(emitter.GetSource(), ShaderSemanticModel.GetDiagnostics(), ShaderSemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
     }
 }
