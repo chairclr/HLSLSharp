@@ -24,7 +24,7 @@
   </ItemGroup>-->
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet build &quot;$(SolutionDir)\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj&quot; /p:$(Configuration)" />
+    <Exec Command="dotnet build &quot;$(SolutionDir)\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj&quot; /p:Configuration=$(Configuration)" />
   </Target>
 
   <ItemGroup>
