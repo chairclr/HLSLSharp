@@ -1,11 +1,18 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+﻿using System.Linq;
+using HLSLSharp.Compiler.Generators;
+using HLSLSharp.Compiler.Generators.Internal.Vectors;
+using HLSLSharp.Translator;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace HLSLSharp.Compiler;
 
-public class SourceTranslator : TopLevelTranslator
+public class SourceTranslator : ProjectTranslator
 {
-    public SourceTranslator(string source, string shaderStructFullyQualifiedName)
-        : base(CSharpSyntaxTree.ParseText(source), shaderStructFullyQualifiedName)
+    //internal override IInternalGenerator[] InternalGenerators => base.InternalGenerators.Where(x => x.GetType() != typeof(AliasGenerator)).ToArray();
+
+    public SourceTranslator(string source)
+        : base(CSharpSyntaxTree.ParseText(source))
     {
 
     }

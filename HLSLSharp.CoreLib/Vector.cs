@@ -1,4 +1,7 @@
-﻿namespace System;
+﻿using System;
+using System.Numerics;
+
+namespace HLSLSharp.CoreLib;
 
 // https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-vector
 
@@ -6,7 +9,7 @@
 /// Represents a 1-dimensional vector of
 /// <typeparamref name="T"/>
 /// </summary>
-public partial class Vector1<T> : IVector<T> where T : IFloatable
+public partial class Vector1<T> : IVector<T> where T : IConvertible
 {
     public extern Vector1();
 
@@ -17,7 +20,7 @@ public partial class Vector1<T> : IVector<T> where T : IFloatable
 /// Represents a 2-dimensional vector of
 /// <typeparamref name="T"/>
 /// </summary>
-public partial class Vector2<T> : IVector<T> where T : IFloatable
+public partial class Vector2<T> : IVector<T> where T : IConvertible
 {
     public extern Vector2();
 
@@ -28,7 +31,7 @@ public partial class Vector2<T> : IVector<T> where T : IFloatable
 /// Represents a 3-dimensional vector of
 /// <typeparamref name="T"/>
 /// </summary>
-public partial class Vector3<T> : IVector<T> where T : IFloatable
+public partial class Vector3<T> : IVector<T> where T : IConvertible
 {
     public extern Vector3();
 
@@ -39,7 +42,7 @@ public partial class Vector3<T> : IVector<T> where T : IFloatable
 /// Represents a 4-dimensional vector of
 /// <typeparamref name="T"/>
 /// </summary>
-public partial class Vector4<T> : IVector<T> where T : IFloatable
+public partial class Vector4<T> : IVector<T> where T : IConvertible
 {
     public extern Vector4();
 

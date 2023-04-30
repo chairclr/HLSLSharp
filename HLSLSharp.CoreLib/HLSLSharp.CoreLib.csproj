@@ -1,57 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>System.Runtime</AssemblyName>
-    <IsPackable>false</IsPackable>
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-    <EnsureRuntimePackageDependencies>false</EnsureRuntimePackageDependencies>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Platform>AnyCPU</Platform>
     <LangVersion>latest</LangVersion>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
-    <RuntimeMetadataVersion>v1.0.0</RuntimeMetadataVersion>
-    <DisableImplicitConfigurationDefines>true</DisableImplicitConfigurationDefines>
-    <SkipCommonResourcesIncludes>true</SkipCommonResourcesIncludes>
-
-    <RootNamespace></RootNamespace>
-
     <NoWarn>$(NoWarn);CS0626;CS0824</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="System\Attribute.cs" />
-    <Compile Include="System\AttributeTargets.cs" />
-    <Compile Include="System\AttributeUsageAttribute.cs" />
-    <Compile Include="System\Enum.cs" />
-    <Compile Include="System\FlagsAttribute.cs" />
-    <Compile Include="System\IFloatable.cs" />
-    <Compile Include="System\Intrinsics.cs" />
-    <Compile Include="System\IVector.cs" />
-    <Compile Include="System\Scalar.cs" />
-    <Compile Include="System\IScalar.cs" />
-    <Compile Include="System\Object.cs" />
-    <Compile Include="System\Reflection\AssemblyCompanyAttribute.cs" />
-    <Compile Include="System\Reflection\AssemblyConfigurationAttribute.cs.cs" />
-    <Compile Include="System\Reflection\AssemblyFileVersionAttribute.cs.cs" />
-    <Compile Include="System\Reflection\AssemblyInformationalVersionAttribute.cs" />
-    <Compile Include="System\Reflection\AssemblyProductAttribute.cs" />
-    <Compile Include="System\Reflection\AssemblyTitleAttribute.cs" />
-    <Compile Include="System\Reflection\AssemblyVersionAttribute.cs" />
-    <Compile Include="System\Reflection\DefaultMemberAttribute.cs.cs" />
-    <Compile Include="System\Runtime\Versioning\TargetFrameworkAttribute.cs" />
-    <Compile Include="System\Shaders\ComputeShaderAttribute.cs" />
-    <Compile Include="System\Shaders\IComputeShader.cs" />
-    <Compile Include="System\Shaders\KernelAttribute.cs" />
-    <Compile Include="System\Shaders\Registers\RegisterAttribute.cs" />
-    <Compile Include="System\Shaders\Registers\RegisterType.cs" />
-    <Compile Include="System\ValueType.cs" />
-    <Compile Include="System\Vector.cs" />
-    <Compile Include="System\Void.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HLSLSharp.CoreLib.Generator\HLSLSharp.CoreLib.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

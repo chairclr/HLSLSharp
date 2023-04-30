@@ -50,7 +50,7 @@ public class SwizzleGenerator : IIncrementalGenerator
             {
                 SwizzleTransform transform = new SwizzleTransform()
                 {
-                    Namespace = "System",
+                    Namespace = "HLSLSharp.CoreLib",
                     VectorTypeName = classDeclaration.Identifier.ValueText + classDeclaration.TypeParameterList?.ToString(),
                 };
 

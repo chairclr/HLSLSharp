@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Compiler.Generators.Roslyn;
@@ -26,60 +27,56 @@ internal class TranslationGenerator : ISourceGenerator
             compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
             .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
 
-        foreach (StructDeclarationSyntax structDeclarationSyntax in computeStructNodes)
-        {
-            SyntaxTree tree = structDeclarationSyntax.SyntaxTree;
+        RoslynProjectTranslator translator = new RoslynProjectTranslator((CSharpCompilation)compilation);
 
-            SemanticModel semanticModel = compilation.GetSemanticModel(tree);
+        //foreach (StructDeclarationSyntax structDeclarationSyntax in computeStructNodes)
+        //{
+        //    SyntaxTree tree = structDeclarationSyntax.SyntaxTree;
 
-            INamedTypeSymbol structSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(structDeclarationSyntax)!;
+        //    SemanticModel semanticModel = compilation.GetSemanticModel(tree);
 
-            SourceGeneratorTranslator translator = new SourceGeneratorTranslator(tree, structSymbol);
-
-            EmitResult result = translator.Emit();
-
-            foreach (Diagnostic diag in result.Diagnostics)
-            {
-                context.ReportDiagnostic(diag);
-            }
-
-            StringBuilder sb = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(structSymbol.ContainingNamespace.Name))
-            {
-                sb.AppendLine($"namespace {structSymbol.ContainingNamespace};");
-            }
-
-            sb.AppendLine($"partial struct {structSymbol.Name}");
-            sb.AppendLine($"{{");
-
-            foreach (SyntaxNode addedNode in translator.NodesAddedToShaderStruct)
-            {
-                sb.AppendLine(addedNode.ToFullString());
-            }
-
-            sb.AppendLine($"    public static string GetHLSLSource()");
-            sb.AppendLine($"    {{");
-            sb.AppendLine($"""""
-                                    return 
-                                        """"
-                                        {result.Result}
-                                        """";
-                            """"");
-            sb.AppendLine($"    }}");
+        //    INamedTypeSymbol structSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(structDeclarationSyntax)!;
 
 
 
-            sb.AppendLine($"}}");
+        //    //EmitResult result = translator.Emit();
+        //    //
+        //    //foreach (Diagnostic diag in )
+        //    //{
+        //    //    context.ReportDiagnostic(diag);
+        //    //}
 
-            context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
+        //    StringBuilder sb = new StringBuilder();
 
-            foreach (InternalGeneratorSource generatedSource in translator.InternalGeneratedSourceText)
-            {
-                context.AddSource($"{structSymbol.Name}.InternalGenerator.{generatedSource.HintName}", generatedSource.Source);
-            }
-        }
+        //    if (!string.IsNullOrEmpty(structSymbol.ContainingNamespace.Name))
+        //    {
+        //        sb.AppendLine($"namespace {structSymbol.ContainingNamespace};");
+        //    }
 
+        //    sb.AppendLine($"partial struct {structSymbol.Name}");
+        //    sb.AppendLine($"{{");
+
+        //    sb.AppendLine($"    public static string GetHLSLSource()");
+        //    sb.AppendLine($"    {{");
+        //    sb.AppendLine($"""""
+        //                            return 
+        //                                """"
+
+        //                                """";
+        //                    """"");
+        //    sb.AppendLine($"    }}");
+
+
+
+        //    sb.AppendLine($"}}");
+
+        //    context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
+
+        //    //foreach (InternalGeneratorSource generatedSource in translator.InternalGeneratedSourceText)
+        //    //{
+        //    //    context.AddSource($"{structSymbol.Name}.InternalGenerator.{generatedSource.HintName}", generatedSource.Source);
+        //    //}
+        //}
     }
 
     public void Initialize(GeneratorInitializationContext context)

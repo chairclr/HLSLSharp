@@ -1,12 +1,15 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.CodeAnalysis;
 
-namespace HLSLSharp.Compiler;
+namespace HLSLSharp.Translator;
 
-public class CoreLibProvider
+internal static class CoreLibProvider
 {
-    private static readonly string RuntimeResourceName = "HLSLSharp.Translator.Embedded_Resources.System.Runtime.dll";
+    private static readonly string RuntimeResourceName = "HLSLSharp.Translator.Embedded_Resources.HLSLSharp.CoreLib.dll";
 
-    public static PortableExecutableReference Reference;
+    public static readonly PortableExecutableReference Reference;
 
     static CoreLibProvider()
     {

@@ -4,6 +4,7 @@ using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Compiler.Generators;
 using HLSLSharp.Compiler.Generators.Internal.Compute;
 using HLSLSharp.Compiler.Generators.Internal.Vectors;
+using HLSLSharp.Translator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -127,7 +128,6 @@ public class TopLevelTranslator
 
         emitter.EmitHLSLSource();
 
-        
         return new EmitResult(emitter.GetSource(), ShaderSemanticModel.GetDiagnostics(), ShaderSemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
     }
 }

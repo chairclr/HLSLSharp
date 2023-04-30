@@ -1,4 +1,6 @@
-﻿namespace System.Shaders;
+﻿using System;
+
+namespace HLSLSharp.CoreLib.Shaders;
 
 [AttributeUsage(AttributeTargets.Struct, Inherited = false)]
 public class ComputeShaderAttribute : Attribute

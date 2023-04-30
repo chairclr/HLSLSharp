@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HLSLSharp.Compiler;
 using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace HLSLSharp.Translator;
 
-public abstract class ProjcetTranslator
+public abstract class ProjectTranslator
 {
     protected CSharpCompilation Compilation;
 
     private readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
-    public ProjcetTranslator(CSharpCompilation compilation)
+    public ProjectTranslator(CSharpCompilation compilation)
     {
         Compilation = compilation;
 
@@ -28,7 +25,7 @@ public abstract class ProjcetTranslator
 
     }
 
-    public ProjcetTranslator(SyntaxTree singleTree)
+    public ProjectTranslator(SyntaxTree singleTree)
     {
         Compilation = CSharpCompilation.Create($"__Translation")
             .AddReferences(CoreLibProvider.Reference)

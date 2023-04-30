@@ -14,21 +14,25 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="False" />
-  </ItemGroup>
   
-  <ItemGroup>
-    <Folder Include="Embedded Resources\" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\$(TargetFramework)\System.Runtime.dll" Link="Embedded Resources\System.Runtime.dll" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
+  
+  <!--<ItemGroup>
+    <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" ReferenceOutputAssembly="False" />
+  </ItemGroup>-->
+
+  <ItemGroup>
+    <Folder Include="Embedded Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\HLSLSharp.CoreLib\bin\$(Configuration)\net7.0\HLSLSharp.CoreLib.dll" Link="Embedded Resources\HLSLSharp.CoreLib.dll" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet build &quot;$(SolutionDir)\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj&quot; /p:$(ConfigurationName)" />
+  </Target>
   
 </Project>

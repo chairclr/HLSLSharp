@@ -1,5 +1,5 @@
-﻿using System;
-using System.Shaders;
+﻿using HLSLSharp.CoreLib;
+using HLSLSharp.CoreLib.Shaders;
 
 namespace HLSLSharp.Tests.ShaderLibrary;
 
@@ -9,11 +9,7 @@ public partial struct SuperSimpleCompute : IComputeShader
     [Kernel]
     public void Compute()
     {
-        Vector3UI threadIdCopy = ThreadId;
 
-        Vector2UI threadIdXY = ThreadId.XY;
-
-        uint threadIdX = ThreadId.X;
     }
 }
 
@@ -23,10 +19,6 @@ public partial struct ComputeCopy : IComputeShader
     [Kernel]
     public void Compute()
     {
-        Vector3UI threadIdCopy = ThreadId;
 
-        Vector2UI threadIdXY = ThreadId.XY;
-
-        uint threadIdX = ThreadId.X;
     }
 }

@@ -39,7 +39,7 @@ public class AliasGenerator : IIncrementalGenerator
 
             return AliasPostfixes.Select(x => new AliasTransform()
             {
-                Namespace = "System",
+                Namespace = "HLSLSharp.CoreLib",
                 GenericVectorTypeName = classDeclaration.Identifier.ValueText,
                 NewVectorTypeName = classDeclaration.Identifier.ValueText + x.Postfix,
                 GenericType = x.GenericType
@@ -54,7 +54,7 @@ public class AliasGenerator : IIncrementalGenerator
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"global using {aliasInfo.NewVectorTypeName} = System.{aliasInfo.GenericVectorTypeName}<{aliasInfo.GenericType}>;");
+            sb.AppendLine($"global using {aliasInfo.NewVectorTypeName} = {(aliasInfo.Namespace is null ? "" : $"{aliasInfo.Namespace}.")}{aliasInfo.GenericVectorTypeName}<{aliasInfo.GenericType}>;");
 
             spc.AddSource($"Alias.{aliasInfo.Namespace}.{aliasInfo.NewVectorTypeName}.g.cs", sb.ToString());
         });

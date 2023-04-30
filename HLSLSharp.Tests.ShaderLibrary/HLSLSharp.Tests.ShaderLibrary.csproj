@@ -3,13 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-    <EnsureRuntimePackageDependencies>false</EnsureRuntimePackageDependencies>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HLSLSharp.Compiler\HLSLSharp.Translator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\HLSLSharp.Translator\HLSLSharp.Translator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\HLSLSharp.CoreLib\HLSLSharp.CoreLib.csproj" />
   </ItemGroup>
 

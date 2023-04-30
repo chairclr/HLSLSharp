@@ -1,4 +1,4 @@
-﻿namespace System.Shaders.Registers;
+﻿namespace HLSLSharp.CoreLib.Shaders.Registers;
 
 public enum RegisterType
 {
