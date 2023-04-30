@@ -9,7 +9,9 @@ public partial struct SuperSimpleCompute : IComputeShader
     [Kernel]
     public void Compute()
     {
+        Vector3I v = new Vector3I(0, 0, 0);
 
+        
     }
 }
 

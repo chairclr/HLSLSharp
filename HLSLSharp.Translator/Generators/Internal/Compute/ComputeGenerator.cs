@@ -3,11 +3,11 @@ using Microsoft.CodeAnalysis;
 
 namespace HLSLSharp.Compiler.Generators.Internal.Compute;
 
-internal class ComputeGenerator : IInternalGenerator
+internal class ComputeGenerator : IInternalShaderGenerator
 {
     private static readonly string ComputeShaderAttributeFullName = "System.Shaders.ComputeShaderAttribute";
 
-    public void Execute(InternalGenerationContext context)
+    public void Execute(InternalShaderGenerationContext context)
     {
         Compilation compilation = context.Compilation;
 

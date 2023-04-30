@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
 namespace HLSLSharp.Compiler.Generators;
 
-internal struct InternalGenerationContext
+internal struct InternalShaderGenerationContext
 {
     public Compilation Compilation { get; }
 
@@ -15,7 +16,9 @@ internal struct InternalGenerationContext
 
     public readonly HashSet<InternalGeneratorSource> AdditionalSources = new HashSet<InternalGeneratorSource>();
 
-    internal InternalGenerationContext(Compilation compilation, SyntaxTree shaderSyntaxTree, INamedTypeSymbol shaderStructType)
+    public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
+
+    public InternalShaderGenerationContext(Compilation compilation, SyntaxTree shaderSyntaxTree, INamedTypeSymbol shaderStructType)
     {
         Compilation = compilation;
         ShaderSyntaxTree = shaderSyntaxTree;
@@ -44,5 +47,10 @@ internal struct InternalGenerationContext
         }
 
         AdditionalSources.Add(internalGeneratorSource);
+    }
+
+    public void ReportDiagnostic(Diagnostic diagnostic)
+    {
+        Diagnostics.Add(diagnostic);
     }
 }

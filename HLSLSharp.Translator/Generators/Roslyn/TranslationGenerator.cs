@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HLSLSharp.Translator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,6 +29,18 @@ internal class TranslationGenerator : ISourceGenerator
             .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
 
         RoslynProjectTranslator translator = new RoslynProjectTranslator((CSharpCompilation)compilation);
+
+        ProjectEmitResult result = translator.Emit();
+
+        foreach (InternalGeneratorSource source in translator.InternalGeneratedSources)
+        {
+            context.AddSource(source.HintName, source.Source);
+        }
+
+        foreach (Diagnostic diagnostic in result.AllDiagnostics)
+        {
+            context.ReportDiagnostic(diagnostic);
+        }
 
         //foreach (StructDeclarationSyntax structDeclarationSyntax in computeStructNodes)
         //{

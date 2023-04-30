@@ -9,5 +9,5 @@ public static class HLSLDiagnosticDescriptors
 {
     public static readonly string IdPrefix = "HLSLS";
 
-    public static DiagnosticDescriptor MissingOrInvalidCoreLibReference => new DiagnosticDescriptor($"{IdPrefix}0001", "Missing or invalid CoreLib reference", "", "Project", DiagnosticSeverity.Error, true);
+    public static DiagnosticDescriptor MissingOrInvalidCoreLibReference => new DiagnosticDescriptor($"{IdPrefix}0001", "Missing or invalid CoreLib reference", "Missing or invalid CoreLib reference", "Project", DiagnosticSeverity.Error, true);
 }
