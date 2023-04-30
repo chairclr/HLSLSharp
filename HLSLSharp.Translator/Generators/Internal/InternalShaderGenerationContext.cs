@@ -10,18 +10,15 @@ internal struct InternalShaderGenerationContext
 {
     public Compilation Compilation { get; }
 
-    public SyntaxTree ShaderSyntaxTree { get; }
-
     public INamedTypeSymbol ShaderStructType { get; }
 
     public readonly HashSet<InternalGeneratorSource> AdditionalSources = new HashSet<InternalGeneratorSource>();
 
     public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
-    public InternalShaderGenerationContext(Compilation compilation, SyntaxTree shaderSyntaxTree, INamedTypeSymbol shaderStructType)
+    public InternalShaderGenerationContext(Compilation compilation, INamedTypeSymbol shaderStructType)
     {
         Compilation = compilation;
-        ShaderSyntaxTree = shaderSyntaxTree;
         ShaderStructType = shaderStructType;
     }
 

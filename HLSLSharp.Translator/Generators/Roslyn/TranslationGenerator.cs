@@ -14,19 +14,10 @@ namespace HLSLSharp.Compiler.Generators.Roslyn;
 [Generator(LanguageNames.CSharp)]
 internal class TranslationGenerator : ISourceGenerator
 {
-    private static readonly string ComputeShaderAttributeFullName = "System.Shaders.ComputeShaderAttribute";
 
     public void Execute(GeneratorExecutionContext context)
     {
         Compilation compilation = context.Compilation;
-
-        INamedTypeSymbol computeShaderAttributeSymbol = compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;
-
-        IEnumerable<StructDeclarationSyntax> structNodes = compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>());
-
-        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node =>
-            compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
-            .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
 
         RoslynProjectTranslator translator = new RoslynProjectTranslator((CSharpCompilation)compilation);
 
