@@ -5,8 +5,6 @@ namespace HLSLSharp.Compiler.Generators.Internal.Compute;
 
 internal class ComputeGenerator : IInternalShaderGenerator
 {
-    private static readonly string ComputeShaderAttributeFullName = "System.Shaders.ComputeShaderAttribute";
-
     public void Execute(InternalShaderGenerationContext context)
     {
         Compilation compilation = context.Compilation;
@@ -15,9 +13,9 @@ internal class ComputeGenerator : IInternalShaderGenerator
 
         StringBuilder sb = new StringBuilder();
 
-        if (!string.IsNullOrEmpty(structSymbol.ContainingNamespace.Name))
+        if (!structSymbol.ContainingNamespace.IsGlobalNamespace)
         {
-            sb.AppendLine($"namespace {structSymbol.ContainingNamespace.Name};");
+            sb.AppendLine($"namespace {structSymbol.ContainingNamespace};");
         }
 
         sb.AppendLine($"partial struct {structSymbol.Name}");

@@ -11,7 +11,12 @@ public partial struct SuperSimpleCompute : IComputeShader
     {
         Vector3I v = new Vector3I(0, 0, 0);
 
-        
+        Vector2UI xy = ThreadId.XY;
+
+        Vector4UI xyxy = xy.XYXY;
+
+        Vector2UI uh = ThreadId.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX.XX;
+
     }
 }
 
@@ -21,6 +26,6 @@ public partial struct ComputeCopy : IComputeShader
     [Kernel]
     public void Compute()
     {
-
+        Vector3UI yxz = ThreadId.YXZ;
     }
 }
