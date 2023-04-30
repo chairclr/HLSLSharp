@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace HLSLSharp.Compiler.Generators.Roslyn;
 
@@ -27,7 +22,7 @@ internal class TranslationGenerator : ISourceGenerator
 
         IEnumerable<StructDeclarationSyntax> structNodes = compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().OfType<StructDeclarationSyntax>());
 
-        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node => 
+        IEnumerable<StructDeclarationSyntax> computeStructNodes = structNodes.Where(node =>
             compilation.GetSemanticModel(node.SyntaxTree).GetDeclaredSymbol(node)!.GetAttributes()
             .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, computeShaderAttributeSymbol)));
 
@@ -89,6 +84,6 @@ internal class TranslationGenerator : ISourceGenerator
 
     public void Initialize(GeneratorInitializationContext context)
     {
-        
+
     }
 }

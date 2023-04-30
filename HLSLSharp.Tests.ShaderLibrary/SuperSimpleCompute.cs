@@ -8,7 +8,7 @@ public partial struct SuperSimpleCompute : IComputeShader
 {
     [Kernel]
     public void Compute()
-    { 
+    {
         Vector3UI threadIdCopy = ThreadId;
 
         Vector2UI threadIdXY = ThreadId.XY;

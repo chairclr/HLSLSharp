@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace HLSLSharp.Compiler.Generators;
@@ -28,7 +26,7 @@ internal struct InternalGenerationContext
     {
         InternalGeneratorSource internalGeneratorSource = new InternalGeneratorSource(hintName, source);
 
-        if (AdditionalSources.Contains(internalGeneratorSource)) 
+        if (AdditionalSources.Contains(internalGeneratorSource))
         {
             throw new ArgumentException("Generated source file names must be unique within a generator.", nameof(hintName));
         }

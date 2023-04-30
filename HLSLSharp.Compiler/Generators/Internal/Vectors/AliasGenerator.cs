@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace HLSLSharp.Compiler.Generators.Internal.Vectors;
@@ -8,7 +6,7 @@ namespace HLSLSharp.Compiler.Generators.Internal.Vectors;
 internal class AliasGenerator : IInternalGenerator
 {
     private static readonly (string Postfix, string GenericType)[] AliasPostfixes = new (string Postfix, string GenericType)[] { ("", "float"), ("D", "double"), ("I", "int"), ("UI", "uint"), ("B", "bool") };
-    
+
     public void Execute(InternalGenerationContext context)
     {
         Compilation compilation = context.Compilation;
