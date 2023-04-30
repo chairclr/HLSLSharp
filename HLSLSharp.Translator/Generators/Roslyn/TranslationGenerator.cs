@@ -33,55 +33,6 @@ internal class TranslationGenerator : ISourceGenerator
         {
             context.ReportDiagnostic(diagnostic);
         }
-
-        //foreach (StructDeclarationSyntax structDeclarationSyntax in computeStructNodes)
-        //{
-        //    SyntaxTree tree = structDeclarationSyntax.SyntaxTree;
-
-        //    SemanticModel semanticModel = compilation.GetSemanticModel(tree);
-
-        //    INamedTypeSymbol structSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(structDeclarationSyntax)!;
-
-
-
-        //    //EmitResult result = translator.Emit();
-        //    //
-        //    //foreach (Diagnostic diag in )
-        //    //{
-        //    //    context.ReportDiagnostic(diag);
-        //    //}
-
-        //    StringBuilder sb = new StringBuilder();
-
-        //    if (!string.IsNullOrEmpty(structSymbol.ContainingNamespace.Name))
-        //    {
-        //        sb.AppendLine($"namespace {structSymbol.ContainingNamespace};");
-        //    }
-
-        //    sb.AppendLine($"partial struct {structSymbol.Name}");
-        //    sb.AppendLine($"{{");
-
-        //    sb.AppendLine($"    public static string GetHLSLSource()");
-        //    sb.AppendLine($"    {{");
-        //    sb.AppendLine($"""""
-        //                            return 
-        //                                """"
-
-        //                                """";
-        //                    """"");
-        //    sb.AppendLine($"    }}");
-
-
-
-        //    sb.AppendLine($"}}");
-
-        //    context.AddSource($"{structSymbol.Name}.HLSLBuilder.g.cs", sb.ToString());
-
-        //    //foreach (InternalGeneratorSource generatedSource in translator.InternalGeneratedSourceText)
-        //    //{
-        //    //    context.AddSource($"{structSymbol.Name}.InternalGenerator.{generatedSource.HintName}", generatedSource.Source);
-        //    //}
-        //}
     }
 
     public void Initialize(GeneratorInitializationContext context)
