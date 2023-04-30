@@ -5,8 +5,12 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace HLSLSharp.Compiler.Generators.Source.Vectors;
+namespace HLSLSharp.Compiler.Generators.Source.Roslyn;
 
+/// <summary>
+/// Roslyn source generator responsible for generating vector aliases
+/// such as <see cref="Vector2I"/>, <see cref="Vector4UI"/>, etc.
+/// </summary>
 [Generator(LanguageNames.CSharp)]
 public class AliasGenerator : ISourceGenerator
 {

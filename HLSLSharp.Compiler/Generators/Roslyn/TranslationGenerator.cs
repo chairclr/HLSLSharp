@@ -9,8 +9,11 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace HLSLSharp.Compiler.Generators.Source;
+namespace HLSLSharp.Compiler.Generators.Roslyn;
 
+/// <summary>
+/// Roslyn source generator responsible for applying Translators to a project
+/// </summary>
 [Generator(LanguageNames.CSharp)]
 internal class TranslationGenerator : ISourceGenerator
 {
