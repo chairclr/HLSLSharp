@@ -127,6 +127,7 @@ public class TopLevelTranslator
 
         emitter.EmitHLSLSource();
 
+        
         return new EmitResult(emitter.GetSource(), ShaderSemanticModel.GetDiagnostics(), ShaderSemanticModel.GetDiagnostics().Any(x => x.Severity == DiagnosticSeverity.Error));
     }
 }
