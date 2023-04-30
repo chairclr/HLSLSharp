@@ -13,6 +13,8 @@ public abstract class ProjectTranslator
 
     private readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
+
+
     public ProjectTranslator(CSharpCompilation compilation)
     {
         Compilation = compilation;

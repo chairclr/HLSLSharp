@@ -1,5 +1,6 @@
 ﻿namespace HLSLSharp.Compiler;
-internal class StructTranslator
+
+internal class ShaderTranslator
 {
 
 }
