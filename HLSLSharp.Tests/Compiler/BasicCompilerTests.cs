@@ -70,5 +70,13 @@ public class BasicCompilerTests
         {
             Console.WriteLine(diagnostic.ToString());
         }
+
+
+        foreach (ShaderEmitResult shaderResult in result.ShaderEmitResults)
+        {
+            Console.WriteLine("//// ---- Emitted Shader Source ---- ////");
+            Console.WriteLine($"//// ---- Type: {shaderResult.FullyQualifiedShaderTypeName} ---- ////");
+            Console.WriteLine(shaderResult.Result);
+        }
     }
 }

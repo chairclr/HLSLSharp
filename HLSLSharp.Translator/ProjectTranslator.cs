@@ -76,6 +76,10 @@ public abstract class ProjectTranslator
         Compilation = Compilation
             .AddSyntaxTrees(InternalGeneratedSources.Select(x => x.SyntaxTree));
 
+        ShaderTranslators.Clear();
+
+        InitializeShaderTranslators();
+
         foreach (Diagnostic diagnostic in Compilation.GetDiagnostics())
         {
             ReportDiagnostic(diagnostic);
@@ -103,7 +107,19 @@ public abstract class ProjectTranslator
             .Select(x => (INamedTypeSymbol)x!)
             .ToList();
 
-        return new ProjectEmitResult(computeShaderTypes.Select(x => new ShaderEmitResult(null, x, ImmutableArray<Diagnostic>.Empty, false)).ToList(), Diagnostics);
+        List<ShaderEmitResult> results = new List<ShaderEmitResult>();
+
+        foreach (ShaderTranslator translator in ShaderTranslators)
+        {
+            results.Add(translator.Emit());
+
+            foreach (Diagnostic diagnostic in translator.Diagnostics)
+            {
+                ReportDiagnostic(diagnostic);
+            }
+        }
+
+        return new ProjectEmitResult(results, Diagnostics);
     }
 
     private void GenerateProjectSource()
@@ -135,6 +151,8 @@ public abstract class ProjectTranslator
 
         List<INamedTypeSymbol> computeShaderTypes = computeStructNodes
             .Select(x => Compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!)
+            .Distinct(SymbolEqualityComparer.Default)
+            .Select(x => (INamedTypeSymbol)x!)
             .ToList();
 
         foreach (INamedTypeSymbol shaderType in computeShaderTypes)
