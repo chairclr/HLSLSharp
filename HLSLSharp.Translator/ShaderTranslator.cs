@@ -85,6 +85,7 @@ internal class ShaderTranslator
         if (true)
         {
             ShaderEmitters.Add(CreateEmitter<ComputeFieldEmitter>());
+            ShaderEmitters.Add(CreateEmitter<ComputeKernelDeclarationEmitter>());
         }
 
     }

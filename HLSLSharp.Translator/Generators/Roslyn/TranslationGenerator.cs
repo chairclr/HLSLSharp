@@ -55,6 +55,8 @@ internal class TranslationGenerator : ISourceGenerator
         {
             sb.Clear();
 
+            string shaderSource = result.ShaderEmitResults.Single(x => x.FullyQualifiedShaderTypeName == $"{shaderType.ContainingNamespace}.{shaderType.MetadataName}").Result ?? "";
+
             if (!shaderType.ContainingNamespace.IsGlobalNamespace)
             {
                 sb.AppendLine($"namespace {shaderType.ContainingNamespace};");
@@ -64,11 +66,13 @@ internal class TranslationGenerator : ISourceGenerator
             sb.AppendLine($"{{");
             sb.AppendLine($"    public static string GetHLSLSource()");
             sb.AppendLine($"    {{");
-            sb.AppendLine($""""
-                                    return """
-                                           {result.ShaderEmitResults.Single(x => x.FullyQualifiedShaderTypeName == $"{shaderType.ContainingNamespace}.{shaderType.MetadataName}").Result}
-                                           """;
-                            """");
+            sb.AppendLine($"        return");
+            sb.AppendLine($"              \"\"\"\"");
+            foreach (string line in shaderSource.Split('\n'))
+            {
+            sb.AppendLine($"              {line}");
+            }
+            sb.AppendLine($"              \"\"\"\";");
             sb.AppendLine($"    }}");
             sb.AppendLine($"}}");
 
