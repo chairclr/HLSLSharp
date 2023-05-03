@@ -10,10 +10,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Compiler.Emit;
 
-internal partial class HLSLEmitter
+internal abstract class HLSLEmitter
 {
-    private static readonly string KernelAttributeFullName = "HLSLSharp.CoreLib.Shaders.KernelAttribute";
-
     public readonly Compilation Compilation;
 
     public readonly INamedTypeSymbol ShaderType;
@@ -26,62 +24,32 @@ internal partial class HLSLEmitter
 
     public readonly SemanticModel KernelBodySemanticModel;
 
-    private StringBuilder SourceBuilder;
+    protected readonly StringBuilder SourceBuilder;
 
     public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
-    public HLSLEmitter(Compilation compilation, INamedTypeSymbol shaderType)
+    public HLSLEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, MethodDeclarationSyntax kernelBodyDeclaration, SyntaxTree kernelBodySyntaxTree, SemanticModel kernelBodySemanticModel)
     {
         Compilation = compilation;
 
         ShaderType = shaderType;
 
-        INamedTypeSymbol kernelAttributeSymbol = Compilation.GetTypeByMetadataName(KernelAttributeFullName)!;
+        ShaderKernelMethod = shaderKernelMethod;
 
-        IMethodSymbol[] kernelMethods = ShaderType.GetMembers()
-            .Where(x => x.Kind == SymbolKind.Method)
-            .Cast<IMethodSymbol>()
-            .Where(x => x.GetAttributes().Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, kernelAttributeSymbol)))
-            .ToArray();
+        KernelBodyDeclaration = kernelBodyDeclaration;
 
-        if (kernelMethods.Length > 1)
-        {
-            foreach (IMethodSymbol methodSymbol in kernelMethods)
-            {
-                foreach (Location location in methodSymbol.Locations)
-                {
-                    ReportDiagnostic(Diagnostic.Create(HLSLDiagnosticDescriptors.MoreThanOneKernel, location));
-                }
-            }
-        }
-        else if (kernelMethods.Length < 1)
-        {
-            foreach (Location location in shaderType.Locations)
-            {
-                ReportDiagnostic(Diagnostic.Create(HLSLDiagnosticDescriptors.NoKernelDefined, location));
-            }
-        }
+        KernelBodySyntaxTree = kernelBodySyntaxTree;
 
-        ShaderKernelMethod = kernelMethods.Single();
-
-        KernelBodyDeclaration = ShaderKernelMethod.DeclaringSyntaxReferences
-            .Select(x => x.GetSyntax())
-            .OfType<MethodDeclarationSyntax>()
-            .Where(x => x.Body is not null)
-            .Single();
-
-        KernelBodySyntaxTree = KernelBodyDeclaration.SyntaxTree;
-
-        KernelBodySemanticModel = compilation.GetSemanticModel(KernelBodySyntaxTree);
+        KernelBodySemanticModel = kernelBodySemanticModel;
 
         SourceBuilder = new StringBuilder();
     }
 
+    protected abstract void Emit();
+
     public void EmitHLSLSource()
     {
-        // CacheComputeTranslationInfo();
-
-        EmitFieldMembers();
+        Emit();
     }
 
     public string GetSource()
@@ -92,13 +60,5 @@ internal partial class HLSLEmitter
     protected void ReportDiagnostic(Diagnostic diagnostic)
     {
         Diagnostics.Add(diagnostic);
-    }
-
-    private void EmitFieldMembers()
-    {
-        foreach (IFieldSymbol fieldSymbol in ShaderType.GetMembers().OfType<IFieldSymbol>())
-        {
-            SourceBuilder.AppendLine($"// {fieldSymbol.Type} {fieldSymbol.Name}");
-        }
     }
 }

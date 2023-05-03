@@ -64,6 +64,39 @@ public class BasicCompilerTests
         Assert.That(result.Success, Is.True);
     }
 
+    [Test]
+    public void SimpleComputeCompilationInvalidField()
+    {
+        string source = $$"""
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
+
+                         [ComputeShader(1, 1, 1)]
+                         public partial struct SuperSimpleCompute : IComputeShader
+                         {
+                            public object ObjectTypeField;
+
+                            [Kernel]
+                            public void Compute()
+                            {
+                                Vector3UI threadIdCopy = ThreadId;
+
+                                Vector2UI threadIdXY = ThreadId.XY;
+
+                                uint threadIdX = ThreadId.X;
+                            }
+                         }
+                         """;
+
+        SourceTranslator translator = new SourceTranslator(source);
+
+        ProjectEmitResult result = translator.Emit();
+
+        LogDiagnostics(result);
+
+        Assert.That(result.Success, Is.True);
+    }
+
     public void LogDiagnostics(ProjectEmitResult result)
     {
         foreach (Diagnostic diagnostic in result.AllDiagnostics)
