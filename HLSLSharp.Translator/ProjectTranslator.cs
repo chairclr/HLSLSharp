@@ -44,6 +44,13 @@ public abstract class ProjectTranslator
             Compilation = Compilation.ReplaceReference(containsAssemblyReference.Single(), CoreLibProvider.Reference);
         }
 
+        foreach (SyntaxTree tree in Compilation.SyntaxTrees)
+        {
+            SyntaxNode normalizedRoot = tree.GetRoot().NormalizeWhitespace("    ", "\n");
+
+            Compilation = Compilation.ReplaceSyntaxTree(tree, tree.WithRootAndOptions(normalizedRoot, tree.Options));
+        }
+
         GenerateProjectSource();
 
         InitializeShaderTranslators();
@@ -66,6 +73,13 @@ public abstract class ProjectTranslator
             .AddReferences(SystemReferenceProvider.References)
             .AddReferences(CoreLibProvider.Reference)
             .AddSyntaxTrees(singleTree);
+
+        foreach (SyntaxTree tree in Compilation.SyntaxTrees)
+        {
+            SyntaxNode normalizedRoot = tree.GetRoot().NormalizeWhitespace("    ", "\n");
+
+            Compilation = Compilation.ReplaceSyntaxTree(tree, tree.WithRootAndOptions(normalizedRoot, tree.Options));
+        }
 
         GenerateProjectSource();
 

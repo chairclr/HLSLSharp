@@ -18,29 +18,17 @@ internal abstract class HLSLEmitter
 
     public readonly IMethodSymbol ShaderKernelMethod;
 
-    public readonly MethodDeclarationSyntax KernelBodyDeclaration;
-
-    public readonly SyntaxTree KernelBodySyntaxTree;
-
-    public readonly SemanticModel KernelBodySemanticModel;
-
     protected readonly StringBuilder SourceBuilder;
 
     public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
-    public HLSLEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, MethodDeclarationSyntax kernelBodyDeclaration, SyntaxTree kernelBodySyntaxTree, SemanticModel kernelBodySemanticModel)
+    public HLSLEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod)
     {
         Compilation = compilation;
 
         ShaderType = shaderType;
 
         ShaderKernelMethod = shaderKernelMethod;
-
-        KernelBodyDeclaration = kernelBodyDeclaration;
-
-        KernelBodySyntaxTree = kernelBodySyntaxTree;
-
-        KernelBodySemanticModel = kernelBodySemanticModel;
 
         SourceBuilder = new StringBuilder();
     }

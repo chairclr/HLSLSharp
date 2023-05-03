@@ -65,6 +65,40 @@ public class BasicCompilerTests
     }
 
     [Test]
+    public void SimpleIfStatementComputeCompilation()
+    {
+        string source = $$"""
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
+
+                         [ComputeShader(1, 1, 1)]
+                         public partial struct SuperSimpleCompute : IComputeShader
+                         {
+                            [Kernel]
+                            public void Compute()
+                            {
+                                Vector2UI threadIdXY = ThreadId.XY;
+
+                                uint threadIdX = ThreadId.X;
+
+                                if (threadIdX > 10)
+                                {
+                                    threadIdX = 69;
+                                }
+                            }
+                         }
+                         """;
+
+        SourceTranslator translator = new SourceTranslator(source);
+
+        ProjectEmitResult result = translator.Emit();
+
+        LogDiagnostics(result);
+
+        Assert.That(result.Success, Is.True);
+    }
+
+    [Test]
     public void SimpleComputeCompilationInvalidField()
     {
         string source = $$"""

@@ -11,8 +11,8 @@ namespace HLSLSharp.Translator.Emit.Emitters;
 
 internal class ComputeFieldEmitter : HLSLEmitter
 {
-    public ComputeFieldEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, MethodDeclarationSyntax kernelBodyDeclaration, SyntaxTree kernelBodySyntaxTree, SemanticModel kernelBodySemanticModel) 
-        : base(compilation, shaderType, shaderKernelMethod, kernelBodyDeclaration, kernelBodySyntaxTree, kernelBodySemanticModel)
+    public ComputeFieldEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod) 
+        : base(compilation, shaderType, shaderKernelMethod)
     {
 
     }

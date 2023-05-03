@@ -88,7 +88,7 @@ internal class ShaderTranslator
             ShaderEmitters.Add(CreateEmitter<ComputeKernelDeclarationEmitter>());
         }
 
-        ShaderEmitters.Add(CreateEmitter<MethodBlockEmitter>());
+        ShaderEmitters.Add(CreateEmitter<CodeBlockEmitter>(KernelBodyDeclaration.Body!, KernelBodySyntaxTree, KernelBodySemanticModel));
     }
 
     public ShaderEmitResult Emit()
@@ -104,7 +104,7 @@ internal class ShaderTranslator
                 ReportDiagnostic(diagnostic);
             }
 
-            sourceResult.AppendLine(emitter.GetSource());
+            sourceResult.Append(emitter.GetSource());
         }
 
         return new ShaderEmitResult(sourceResult.ToString(), ShaderType, Diagnostics.ToImmutableArray(), true);
@@ -115,8 +115,15 @@ internal class ShaderTranslator
         Diagnostics.Add(diagnostic);
     }
 
-    private HLSLEmitter CreateEmitter<T>() where T : HLSLEmitter
+    private HLSLEmitter CreateEmitter<T>(params object?[] args) where T : HLSLEmitter
     {
-        return (T)Activator.CreateInstance(typeof(T), Compilation, ShaderType, ShaderKernelMethod, KernelBodyDeclaration, KernelBodySyntaxTree, KernelBodySemanticModel);
+        if (args.Length < 1)
+        {
+            return (T)Activator.CreateInstance(typeof(T), Compilation, ShaderType, ShaderKernelMethod);
+        }
+        else
+        {
+            return (T)Activator.CreateInstance(typeof(T), new object?[] { Compilation, ShaderType, ShaderKernelMethod }.Concat(args).ToArray());
+        }
     }
 }
