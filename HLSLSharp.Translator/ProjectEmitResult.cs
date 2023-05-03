@@ -24,7 +24,7 @@ public class ProjectEmitResult
 
         TranslationDiagnostics = translationDiagnostics;
 
-        AllDiagnostics = ShaderEmitResults.SelectMany(x => x.Diagnostics).Concat(TranslationDiagnostics);
+        AllDiagnostics = TranslationDiagnostics;
 
         Success = !AllDiagnostics.Any(x => x.Severity == DiagnosticSeverity.Error);
     }

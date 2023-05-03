@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HLSLSharp.Compiler.Emit;
+using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -38,10 +39,14 @@ internal class ComputeFieldEmitter : HLSLEmitter
         }
 
         if (field.IsAbstract)
+        {
             return false;
+        }
 
         if (field.Type.TypeKind == TypeKind.Class && !field.Type.ToString().StartsWith("HLSLSharp.CoreLib.Vector"))
         {
+            ReportDiagnostic(Diagnostic.Create(HLSLDiagnosticDescriptors.ShadersCannotHaveClassFields, field.Locations.Single(), field.ToString()));
+
             return false;
         }
 

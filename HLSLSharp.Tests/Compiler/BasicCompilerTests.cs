@@ -94,7 +94,7 @@ public class BasicCompilerTests
 
         LogDiagnostics(result);
 
-        Assert.That(result.Success, Is.True);
+        Assert.That(result.Success, Is.False);
     }
 
     public void LogDiagnostics(ProjectEmitResult result)
