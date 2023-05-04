@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using HLSLSharp.Compiler.Emit;
+﻿using HLSLSharp.Compiler.Emit;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Translator.Emit.Emitters;
+
 internal class CodeBlockEmitter : HLSLEmitter
 {
     public readonly BlockSyntax CodeBlock;
