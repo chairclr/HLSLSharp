@@ -39,7 +39,11 @@ internal class StatementEmitter : HLSLEmitter
 
                         if (declaratorSyntax.Initializer is not null)
                         {
-                            SourceBuilder.Write($" = {declaratorSyntax.Initializer.Value}");
+                            ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, declaratorSyntax.Initializer.Value, StatementSemanticModel);
+
+                            expressionEmitter.EmitHLSLSource();
+
+                            SourceBuilder.Write($" = {expressionEmitter.GetSource()}");
                         }
 
                         SourceBuilder.WriteLine($";");
@@ -65,7 +69,14 @@ internal class StatementEmitter : HLSLEmitter
         {
             CodeBlockEmitter codeBlockEmitter = new CodeBlockEmitter(Compilation, ShaderType, ShaderKernelMethod, codeBlock, codeBlock.SyntaxTree, Compilation.GetSemanticModel(codeBlock.SyntaxTree));
 
-            WriteEmitterSource(codeBlockEmitter, true);
+            WriteEmitterSource(codeBlockEmitter, false);
+        }
+
+        if (Statement is ExpressionStatementSyntax expressionStatement)
+        {
+            ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, expressionStatement.Expression, StatementSemanticModel);
+
+            WriteEmitterSource(expressionEmitter);
         }
     }
 }

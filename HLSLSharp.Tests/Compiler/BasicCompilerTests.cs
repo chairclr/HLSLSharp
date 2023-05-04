@@ -77,8 +77,6 @@ public class BasicCompilerTests
                             [Kernel]
                             public void Compute()
                             {
-                                Vector2UI threadIdXY = ThreadId.XY;
-
                                 uint threadIdX = ThreadId.X;
 
                                 if (threadIdX > 10)

@@ -47,4 +47,34 @@ internal class BasicTypeTransformer
 
         return BasicTypeMappings.TryGetValue(fullyQualifiedName, out hlslType);
     }
+
+    public static bool IsVectorType(INamedTypeSymbol csType)
+    {
+        string fullyQualifiedName = csType.ToString();
+
+        return fullyQualifiedName switch
+        {
+            "HLSLSharp.CoreLib.Vector1<float>" => true,
+            "HLSLSharp.CoreLib.Vector2<float>" => true,
+            "HLSLSharp.CoreLib.Vector3<float>" => true,
+            "HLSLSharp.CoreLib.Vector4<float>" => true,
+            "HLSLSharp.CoreLib.Vector1<double>" => true,
+            "HLSLSharp.CoreLib.Vector2<double>" => true,
+            "HLSLSharp.CoreLib.Vector3<double>" => true,
+            "HLSLSharp.CoreLib.Vector4<double>" => true,
+            "HLSLSharp.CoreLib.Vector1<int>" => true,
+            "HLSLSharp.CoreLib.Vector2<int>" => true,
+            "HLSLSharp.CoreLib.Vector3<int>" => true,
+            "HLSLSharp.CoreLib.Vector4<int>" => true,
+            "HLSLSharp.CoreLib.Vector1<uint>" => true,
+            "HLSLSharp.CoreLib.Vector2<uint>" => true,
+            "HLSLSharp.CoreLib.Vector3<uint>" => true,
+            "HLSLSharp.CoreLib.Vector4<uint>" => true,
+            "HLSLSharp.CoreLib.Vector1<bool>" => true,
+            "HLSLSharp.CoreLib.Vector2<bool>" => true,
+            "HLSLSharp.CoreLib.Vector3<bool>" => true,
+            "HLSLSharp.CoreLib.Vector4<bool>" => true,
+            _ => false,
+        };
+    }
 }
