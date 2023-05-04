@@ -97,7 +97,7 @@ internal class ShaderTranslator
 
         foreach (HLSLEmitter emitter in ShaderEmitters)
         {
-            emitter.EmitHLSLSource();
+            emitter.Emit();
 
             foreach (Diagnostic diagnostic in emitter.Diagnostics)
             {
