@@ -51,12 +51,34 @@ internal class ExpressionEmitter : HLSLEmitter
 
             rightExpressionEmitter.Emit();
 
-            SourceBuilder.Write($"{leftExpressionEmitter.GetSource()} = {rightExpressionEmitter.GetSource()};");
+            SourceBuilder.Write($"{leftExpressionEmitter.GetSource()} {assignmentExpression.OperatorToken} {rightExpressionEmitter.GetSource()};");
         }
 
         if (Expression is LiteralExpressionSyntax literalExpression)
         {
             SourceBuilder.Write($"{literalExpression.Token}");
+        }
+
+        if (Expression is BinaryExpressionSyntax binaryExpression)
+        {
+            ExpressionEmitter leftExpressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, binaryExpression.Left, ExpressionSemanticModel);
+
+            leftExpressionEmitter.Emit();
+
+            ExpressionEmitter rightExpressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, binaryExpression.Right, ExpressionSemanticModel);
+
+            rightExpressionEmitter.Emit();
+
+            SourceBuilder.Write($"{leftExpressionEmitter.GetSource()} {binaryExpression.OperatorToken} {rightExpressionEmitter.GetSource()}");
+        }
+
+        if (Expression is ParenthesizedExpressionSyntax parenthesizedExpression)
+        {
+            ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, parenthesizedExpression.Expression, ExpressionSemanticModel);
+
+            expressionEmitter.Emit();
+
+            SourceBuilder.Write($"({expressionEmitter.GetSource()})");
         }
     }
 }

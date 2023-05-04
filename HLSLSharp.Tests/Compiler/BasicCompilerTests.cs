@@ -97,6 +97,39 @@ public class BasicCompilerTests
     }
 
     [Test]
+    public void SimpleOperationComputeCompilation()
+    {
+        string source = $$"""
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
+
+                         [ComputeShader(1, 1, 1)]
+                         public partial struct SuperSimpleCompute : IComputeShader
+                         {
+                            [Kernel]
+                            public void Compute()
+                            {
+                                uint threadIdX = ThreadId.X;
+
+                                uint val = threadIdX * (ThreadId.X - (ThreadId.Y * ThreadId.ZZZ.X));
+
+                                val /= 2;
+
+                                val *= 2;
+                            }
+                         }
+                         """;
+
+        SourceTranslator translator = new SourceTranslator(source);
+
+        ProjectEmitResult result = translator.Emit();
+
+        LogDiagnostics(result);
+
+        Assert.That(result.Success, Is.True);
+    }
+
+    [Test]
     public void SimpleComputeCompilationInvalidField()
     {
         string source = $$"""
