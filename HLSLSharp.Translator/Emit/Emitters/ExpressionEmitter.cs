@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HLSLSharp.Compiler.Emit;
+﻿using HLSLSharp.Compiler.Emit;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -13,7 +10,7 @@ internal class ExpressionEmitter : HLSLEmitter
 
     private readonly SemanticModel ExpressionSemanticModel;
 
-    public ExpressionEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, ExpressionSyntax expression, SemanticModel expresisonSemanticModel) 
+    public ExpressionEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, ExpressionSyntax expression, SemanticModel expresisonSemanticModel)
         : base(compilation, shaderType, shaderKernelMethod)
     {
         Expression = expression;

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Translator.Emit.Emitters;
 
@@ -15,7 +12,7 @@ internal class ComputeKernelDeclarationEmitter : HLSLEmitter
 
     private readonly INamedTypeSymbol ComputeShaderAttributeSymbol;
 
-    public ComputeKernelDeclarationEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod) 
+    public ComputeKernelDeclarationEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod)
         : base(compilation, shaderType, shaderKernelMethod)
     {
         ComputeShaderAttributeSymbol = Compilation.GetTypeByMetadataName(ComputeShaderAttributeFullName)!;

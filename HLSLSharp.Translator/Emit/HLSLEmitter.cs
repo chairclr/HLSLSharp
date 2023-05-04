@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
-using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Compiler.Emit;
 
@@ -75,7 +68,7 @@ internal abstract class HLSLEmitter
         }
     }
 
-    ~HLSLEmitter() 
+    ~HLSLEmitter()
     {
         SourceBuilder.Dispose();
     }

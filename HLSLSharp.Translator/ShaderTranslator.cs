@@ -1,16 +1,16 @@
-﻿using HLSLSharp.Compiler.Generators;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
-using HLSLSharp.Compiler.Generators.Internal.Compute;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using HLSLSharp.Compiler.Emit;
-using System.Collections.Concurrent;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using HLSLSharp.Compiler.Generators;
+using HLSLSharp.Compiler.Generators.Internal.Compute;
 using HLSLSharp.Translator.Diagnostics;
-using System.Linq;
-using System;
 using HLSLSharp.Translator.Emit.Emitters;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Compiler;
 

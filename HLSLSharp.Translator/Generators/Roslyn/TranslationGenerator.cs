@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using HLSLSharp.Translator;
 using Microsoft.CodeAnalysis;
@@ -70,7 +67,7 @@ internal class TranslationGenerator : ISourceGenerator
             sb.AppendLine($"              \"\"\"\"");
             foreach (string line in shaderSource.Split('\n'))
             {
-            sb.AppendLine($"              {line}");
+                sb.AppendLine($"              {line}");
             }
             sb.AppendLine($"              \"\"\"\";");
             sb.AppendLine($"    }}");

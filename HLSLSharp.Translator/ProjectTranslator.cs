@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using HLSLSharp.Compiler;
 using HLSLSharp.Compiler.Generators;
-using HLSLSharp.Compiler.Generators.Internal.Compute;
 using HLSLSharp.Compiler.Generators.Internal.Vectors;
 using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -31,7 +30,7 @@ public abstract class ProjectTranslator
     public ProjectTranslator(CSharpCompilation compilation)
     {
         Compilation = compilation;
-        
+
         IEnumerable<MetadataReference> containsAssemblyReference = Compilation.References.Where(x => x.Display?.EndsWith($"{System.IO.Path.DirectorySeparatorChar}HLSLSharp.CoreLib.dll") ?? false);
 
         if (!Compilation.References.Contains(CoreLibProvider.Reference) && !containsAssemblyReference.Any())
