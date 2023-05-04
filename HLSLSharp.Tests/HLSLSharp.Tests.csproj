@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HLSLSharp.Tests.ShaderLibrary\HLSLSharp.Tests.ShaderLibrary.csproj">
+    <!--<ProjectReference Include="..\HLSLSharp.Tests.ShaderLibrary\HLSLSharp.Tests.ShaderLibrary.csproj">
       <Aliases>Shaders</Aliases>
-    </ProjectReference>
+    </ProjectReference>-->
     <ProjectReference Include="..\HLSLSharp\HLSLSharp.csproj" />
   </ItemGroup>
 

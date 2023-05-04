@@ -32,8 +32,8 @@ internal class ComputeKernelDeclarationEmitter : HLSLEmitter
 
         ValidateComputeShaderAttribute(computeShaderAttribute, x, y, z);
 
-        SourceBuilder.AppendLine($"[numthreads({x}, {y}, {z})]");
-        SourceBuilder.AppendLine($"void __CSMain(uint3 ThreadId : SV_DispatchThreadID)");
+        SourceBuilder.WriteLine($"[numthreads({x}, {y}, {z})]");
+        SourceBuilder.WriteLine($"void __CSMain(uint3 ThreadId : SV_DispatchThreadID)");
     }
 
     private void ValidateComputeShaderAttribute(AttributeData computeShaderAttribute, int x, int y, int z)

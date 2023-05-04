@@ -88,7 +88,7 @@ internal class ShaderTranslator
             ShaderEmitters.Add(CreateEmitter<ComputeKernelDeclarationEmitter>());
         }
 
-        ShaderEmitters.Add(CreateEmitter<CodeBlockEmitter>(KernelBodyDeclaration.Body!, KernelBodySyntaxTree, KernelBodySemanticModel));
+        ShaderEmitters.Add(CreateEmitter<MethodCodeBlockEmitter>(KernelBodyDeclaration.Body!, KernelBodySyntaxTree, KernelBodySemanticModel));
     }
 
     public ShaderEmitResult Emit()

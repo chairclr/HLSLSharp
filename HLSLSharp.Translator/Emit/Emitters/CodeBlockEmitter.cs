@@ -28,35 +28,16 @@ internal class CodeBlockEmitter : HLSLEmitter
 
     protected override void Emit()
     {
-        SourceBuilder.AppendLine("{");
-
-        SourceBuilder.AppendLine($"    /// -- Original Method Source code -- ///");
-        SourceBuilder.AppendLine($"    /*");
-        SourceBuilder.AppendLine($"    {CodeBlock}");
-        SourceBuilder.AppendLine($"    */");
+        SourceBuilder.WriteLine($"/// -- Original Code Block Source code -- ///");
+        SourceBuilder.WriteLine($"/*");
+        SourceBuilder.WriteLine($"        {CodeBlock}");
+        SourceBuilder.WriteLine($"*/");
 
         foreach (StatementSyntax statement in CodeBlock.Statements)
         {
-            SyntaxKind kind = statement.Kind();
+            StatementEmitter statementEmitter = new StatementEmitter(Compilation, ShaderType, ShaderKernelMethod, statement, CodeBlockSemanticModel);
 
-            if (statement is IfStatementSyntax ifStatement)
-            {
-                SourceBuilder.AppendLine($"    /// -- If Statement -- ///");
-                SourceBuilder.AppendLine($"    /// -- if ({ifStatement.Condition}) -- ///");
-                SourceBuilder.AppendLine($"    /*");
-                SourceBuilder.AppendLine($"    {ifStatement.Statement}");
-                SourceBuilder.AppendLine($"    */");
-            }
-            else
-            {
-
-                SourceBuilder.AppendLine($"    /// -- Statement -- ///");
-                SourceBuilder.AppendLine($"    /*");
-                SourceBuilder.AppendLine($"    {statement}");
-                SourceBuilder.AppendLine($"    */");
-            }
+            WriteEmitterSource(statementEmitter, false);
         }
-
-        SourceBuilder.AppendLine("}");
     }
 }

@@ -23,11 +23,11 @@ internal class ComputeFieldEmitter : HLSLEmitter
         {
             if (!ValidateField(fieldSymbol))
             {
-                SourceBuilder.AppendLine($"// Invalid Field {fieldSymbol.Type} {fieldSymbol.Name}");
+                SourceBuilder.WriteLine($"// Invalid Field {fieldSymbol.Type} {fieldSymbol.Name}");
                 continue;
             }
 
-            SourceBuilder.AppendLine($"// Valid Field {fieldSymbol.Type} {fieldSymbol.Name}");
+            SourceBuilder.WriteLine($"// Valid Field {fieldSymbol.Type} {fieldSymbol.Name}");
         }
     }
 

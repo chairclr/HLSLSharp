@@ -1,5 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,7 +20,9 @@ internal abstract class HLSLEmitter
 
     public readonly IMethodSymbol ShaderKernelMethod;
 
-    protected readonly StringBuilder SourceBuilder;
+    private readonly StringBuilder SourceStringBuilder;
+
+    protected readonly StringWriter SourceBuilder;
 
     public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
@@ -30,7 +34,12 @@ internal abstract class HLSLEmitter
 
         ShaderKernelMethod = shaderKernelMethod;
 
-        SourceBuilder = new StringBuilder();
+        SourceStringBuilder = new StringBuilder();
+
+        SourceBuilder = new StringWriter(SourceStringBuilder)
+        {
+            NewLine = "\n"
+        };
     }
 
     protected abstract void Emit();
@@ -48,5 +57,25 @@ internal abstract class HLSLEmitter
     protected void ReportDiagnostic(Diagnostic diagnostic)
     {
         Diagnostics.Add(diagnostic);
+    }
+
+    protected void WriteEmitterSource(HLSLEmitter emitter, bool indent = false)
+    {
+        emitter.EmitHLSLSource();
+
+        foreach (string line in emitter.GetSource().Split('\n'))
+        {
+            if (indent)
+            {
+                SourceBuilder.Write("    ");
+            }
+
+            SourceBuilder.WriteLine(line);
+        }
+    }
+
+    ~HLSLEmitter() 
+    {
+        SourceBuilder.Dispose();
     }
 }
