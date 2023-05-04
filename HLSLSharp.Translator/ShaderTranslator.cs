@@ -81,6 +81,8 @@ internal class ShaderTranslator
 
         ShaderEmitters = new List<HLSLEmitter>();
 
+        ShaderEmitters.Add(CreateEmitter<ShaderMethodEmitter>());
+
         // if-check to allow different shader types in the future
         if (true)
         {

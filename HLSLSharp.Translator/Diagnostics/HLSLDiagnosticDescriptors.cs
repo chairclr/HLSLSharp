@@ -17,4 +17,10 @@ public static class HLSLDiagnosticDescriptors
     public static DiagnosticDescriptor ComputeShaderNumThreadsMustBeGreaterThan0 => new DiagnosticDescriptor($"{IdPrefix}0005", "Thread count must be greater than 0", "Thread count must be greater than 0 (thread '{0}')", "Emit", DiagnosticSeverity.Error, true);
 
     public static DiagnosticDescriptor ComputeShaderNumThreadsExceedsMaximum => new DiagnosticDescriptor($"{IdPrefix}0006", "Total thread count (x * y * z) must be lesser than maximum", "Total thread count (x * y * z) must be lesser than {0}", "Emit", DiagnosticSeverity.Error, true);
+
+    public static DiagnosticDescriptor MethodGeneric => new DiagnosticDescriptor($"{IdPrefix}0007", "Method cannot be generic", "Shader methods cannot be generic (method {0})", "Emit", DiagnosticSeverity.Error, true);
+    
+    public static DiagnosticDescriptor MethodAbstract => new DiagnosticDescriptor($"{IdPrefix}0007", "Method cannot be abstract", "Shader methods cannot be abstract (method {0})", "Emit", DiagnosticSeverity.Error, true);
+    
+    public static DiagnosticDescriptor ShaderDestructor => new DiagnosticDescriptor($"{IdPrefix}0008", "Shader shouldn't have destructor", "Shaders should not have destructors", "Emit", DiagnosticSeverity.Warning, true);
 }

@@ -11,7 +11,7 @@ namespace HLSLSharp.Tests.Compiler;
 public class FunctionCompilerTests : CompilerTests
 {
     [Test]
-    public void EmptyComputeCompilation()
+    public void SimpleFunctionCompilation()
     {
         string source = $$"""
                          using HLSLSharp.CoreLib;
@@ -75,5 +75,38 @@ public class FunctionCompilerTests : CompilerTests
 
             Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"return x + y;"));
         });
+    }
+
+    [Test]
+    public void InvalidMethodCompilation()
+    {
+        string source = $$"""
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
+
+                         [ComputeShader(1, 1, 1)]
+                         public partial struct EmptyCompute : IComputeShader
+                         {
+                            [Kernel]
+                            public void Compute()
+                            {
+                                
+                            }
+
+                            public void TestInvalidMethod<T>()
+                            {
+                                T x = new T();
+                            }
+
+                         }
+                         """;
+
+        SourceTranslator translator = new SourceTranslator(source);
+
+        ProjectEmitResult result = translator.Emit();
+
+        LogDiagnostics(result);
+
+        Assert.That(result.Success, Is.False);
     }
 }
