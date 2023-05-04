@@ -13,7 +13,7 @@ internal class ComputeFieldEmitter : HLSLEmitter
 
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         foreach (IFieldSymbol fieldSymbol in ShaderType.GetMembers().Where(x => x.Kind == SymbolKind.Field))
         {

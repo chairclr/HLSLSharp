@@ -18,7 +18,7 @@ internal class StatementEmitter : HLSLEmitter
         StatementSemanticModel = statementSemanticModel;
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         if (Statement is LocalDeclarationStatementSyntax localDeclarationStatement)
         {
@@ -38,7 +38,7 @@ internal class StatementEmitter : HLSLEmitter
                         {
                             ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, declaratorSyntax.Initializer.Value, StatementSemanticModel);
 
-                            expressionEmitter.EmitHLSLSource();
+                            expressionEmitter.Emit();
 
                             SourceBuilder.Write($" = {expressionEmitter.GetSource()}");
                         }
@@ -57,7 +57,7 @@ internal class StatementEmitter : HLSLEmitter
 
             StatementEmitter statementEmitter = new StatementEmitter(Compilation, ShaderType, ShaderKernelMethod, ifStatement.Statement, StatementSemanticModel);
 
-            WriteEmitterSource(statementEmitter, true);
+            WriteEmitter(statementEmitter, true);
 
             SourceBuilder.WriteLine($"}}");
         }
@@ -66,14 +66,14 @@ internal class StatementEmitter : HLSLEmitter
         {
             CodeBlockEmitter codeBlockEmitter = new CodeBlockEmitter(Compilation, ShaderType, ShaderKernelMethod, codeBlock, codeBlock.SyntaxTree, Compilation.GetSemanticModel(codeBlock.SyntaxTree));
 
-            WriteEmitterSource(codeBlockEmitter, false);
+            WriteEmitter(codeBlockEmitter, false);
         }
 
         if (Statement is ExpressionStatementSyntax expressionStatement)
         {
             ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, expressionStatement.Expression, StatementSemanticModel);
 
-            WriteEmitterSource(expressionEmitter);
+            WriteEmitter(expressionEmitter);
         }
     }
 }

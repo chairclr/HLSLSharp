@@ -23,18 +23,18 @@ internal class CodeBlockEmitter : HLSLEmitter
         CodeBlockSemanticModel = codeBlockSemanticModel;
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         SourceBuilder.WriteLine($"/// -- Original Code Block Source code -- ///");
         SourceBuilder.WriteLine($"/*");
-        SourceBuilder.WriteLine($"{CodeBlock.OpenBraceToken.LeadingTrivia.Where(x => x.IsKind(SyntaxKind.WhitespaceTrivia)).First()}{CodeBlock}");
+        SourceBuilder.WriteLine($"{CodeBlock}");
         SourceBuilder.WriteLine($"*/");
 
         foreach (StatementSyntax statement in CodeBlock.Statements)
         {
             StatementEmitter statementEmitter = new StatementEmitter(Compilation, ShaderType, ShaderKernelMethod, statement, CodeBlockSemanticModel);
 
-            WriteEmitterSource(statementEmitter, false);
+            WriteEmitter(statementEmitter, false);
         }
     }
 }

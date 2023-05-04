@@ -17,7 +17,7 @@ internal class ExpressionEmitter : HLSLEmitter
         ExpressionSemanticModel = expresisonSemanticModel;
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         if (Expression is MemberAccessExpressionSyntax memberAccessExpression)
         {
@@ -29,7 +29,7 @@ internal class ExpressionEmitter : HLSLEmitter
                 {
                     ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, memberAccessExpression.Expression, ExpressionSemanticModel);
 
-                    expressionEmitter.EmitHLSLSource();
+                    expressionEmitter.Emit();
 
                     SourceBuilder.Write($"{expressionEmitter.GetSource()}.{memberAccessExpression.Name.ToString().ToLower()}");
                 }
@@ -45,11 +45,11 @@ internal class ExpressionEmitter : HLSLEmitter
         {
             ExpressionEmitter leftExpressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, assignmentExpression.Left, ExpressionSemanticModel);
 
-            leftExpressionEmitter.EmitHLSLSource();
+            leftExpressionEmitter.Emit();
 
             ExpressionEmitter rightExpressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, assignmentExpression.Right, ExpressionSemanticModel);
 
-            rightExpressionEmitter.EmitHLSLSource();
+            rightExpressionEmitter.Emit();
 
             SourceBuilder.Write($"{leftExpressionEmitter.GetSource()} = {rightExpressionEmitter.GetSource()};");
         }

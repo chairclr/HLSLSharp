@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Text;
+using HLSLSharp.Translator.Emit;
 using Microsoft.CodeAnalysis;
 
 namespace HLSLSharp.Compiler.Emit;
@@ -14,9 +16,7 @@ internal abstract class HLSLEmitter
 
     public readonly IMethodSymbol ShaderKernelMethod;
 
-    private readonly StringBuilder SourceStringBuilder;
-
-    protected readonly StringWriter SourceBuilder;
+    protected readonly SourceBuilder SourceBuilder;
 
     public readonly ConcurrentBag<Diagnostic> Diagnostics = new ConcurrentBag<Diagnostic>();
 
@@ -28,20 +28,10 @@ internal abstract class HLSLEmitter
 
         ShaderKernelMethod = shaderKernelMethod;
 
-        SourceStringBuilder = new StringBuilder();
-
-        SourceBuilder = new StringWriter(SourceStringBuilder)
-        {
-            NewLine = "\n"
-        };
+        SourceBuilder = new SourceBuilder();
     }
 
-    protected abstract void Emit();
-
-    public void EmitHLSLSource()
-    {
-        Emit();
-    }
+    public abstract void Emit();
 
     public string GetSource()
     {
@@ -53,23 +43,17 @@ internal abstract class HLSLEmitter
         Diagnostics.Add(diagnostic);
     }
 
-    protected void WriteEmitterSource(HLSLEmitter emitter, bool indent = false)
+    protected void WriteEmitter(HLSLEmitter emitter, bool indent = false)
     {
-        emitter.EmitHLSLSource();
+        emitter.Emit();
 
-        foreach (string line in emitter.GetSource().Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+        if (indent)
         {
-            if (indent)
-            {
-                SourceBuilder.Write("    ");
-            }
-
-            SourceBuilder.WriteLine(line);
+            SourceBuilder.Concat(emitter.SourceBuilder.GetLines().Select(x => "    " + x));
         }
-    }
-
-    ~HLSLEmitter()
-    {
-        SourceBuilder.Dispose();
+        else
+        {
+            SourceBuilder.Concat(emitter.SourceBuilder.GetLines());
+        }
     }
 }

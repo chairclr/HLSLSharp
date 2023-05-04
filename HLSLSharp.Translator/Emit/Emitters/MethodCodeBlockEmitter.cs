@@ -22,13 +22,13 @@ internal class MethodCodeBlockEmitter : HLSLEmitter
         CodeBlockSemanticModel = codeBlockSemanticModel;
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         SourceBuilder.WriteLine($"{{");
 
         CodeBlockEmitter codeBlockEmitter = new CodeBlockEmitter(Compilation, ShaderType, ShaderKernelMethod, CodeBlock, CodeBlockSyntaxTree, CodeBlockSemanticModel);
 
-        WriteEmitterSource(codeBlockEmitter, true);
+        WriteEmitter(codeBlockEmitter, true);
 
         SourceBuilder.WriteLine($"}}");
     }

@@ -19,7 +19,7 @@ internal class ComputeKernelDeclarationEmitter : HLSLEmitter
 
     }
 
-    protected override void Emit()
+    public override void Emit()
     {
         AttributeData computeShaderAttribute = ShaderType.GetAttributes().Where(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, ComputeShaderAttributeSymbol)).Single();
 
