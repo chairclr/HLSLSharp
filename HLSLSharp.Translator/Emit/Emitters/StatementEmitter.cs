@@ -53,6 +53,8 @@ internal class StatementEmitter : HLSLEmitter
         {
             ExpressionEmitter conditionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, ifStatement.Condition, StatementSemanticModel);
 
+            conditionEmitter.Emit();
+
             SourceBuilder.WriteLine($"if ({conditionEmitter.GetSource()})");
 
             SourceBuilder.WriteLine($"{{");
