@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using HLSLSharp.Compiler.Emit;
@@ -30,7 +31,7 @@ internal class CodeBlockEmitter : HLSLEmitter
     {
         SourceBuilder.WriteLine($"/// -- Original Code Block Source code -- ///");
         SourceBuilder.WriteLine($"/*");
-        SourceBuilder.WriteLine($"        {CodeBlock}");
+        SourceBuilder.WriteLine($"{CodeBlock.OpenBraceToken.LeadingTrivia.Where(x => x.IsKind(SyntaxKind.WhitespaceTrivia)).First()}{CodeBlock}");
         SourceBuilder.WriteLine($"*/");
 
         foreach (StatementSyntax statement in CodeBlock.Statements)

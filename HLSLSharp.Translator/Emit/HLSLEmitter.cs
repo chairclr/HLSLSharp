@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using HLSLSharp.Translator.Diagnostics;
@@ -63,7 +64,7 @@ internal abstract class HLSLEmitter
     {
         emitter.EmitHLSLSource();
 
-        foreach (string line in emitter.GetSource().Split('\n'))
+        foreach (string line in emitter.GetSource().Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
             if (indent)
             {
