@@ -63,17 +63,21 @@ public class FunctionCompilerTests : CompilerTests
         {
             Assert.That(result.Success, Is.True);
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"void TestVoidParameterless(int x)"));
+            string shaderSource = result.ShaderEmitResults.Single().Result!;
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"void TestVoidVector(float4 x)"));
+            Assert.That(shaderSource, Contains.Substring($"void TestVoidParameterless()"));
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"float TestReturn()"));
+            Assert.That(shaderSource, Contains.Substring($"void TestVoidInt(int x)"));
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"return 1.67;"));
+            Assert.That(shaderSource, Contains.Substring($"void TestVoidVector(float4 x)"));
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"void TestAdd(int x, int y)"));
+            Assert.That(shaderSource, Contains.Substring($"float TestReturn()"));
 
-            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"return x + y;"));
+            Assert.That(shaderSource, Contains.Substring($"return 1.67;"));
+
+            Assert.That(shaderSource, Contains.Substring($"int TestAdd(int x, int y)"));
+
+            Assert.That(shaderSource, Contains.Substring($"return x + y;"));
         });
     }
 

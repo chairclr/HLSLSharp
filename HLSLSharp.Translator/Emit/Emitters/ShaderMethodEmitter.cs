@@ -22,13 +22,14 @@ internal class ShaderMethodEmitter : HLSLEmitter
         {
             if (!ValidateMethodDeclaration(methodSymbol))
             {
-                SourceBuilder.WriteLine($"// Invalid Method {methodSymbol}");
                 continue;
             }
 
-            SourceBuilder.WriteLine($"// Valid Method {methodSymbol}");
+            MethodSignatureEmitter signatureEmitter = new MethodSignatureEmitter(Compilation, ShaderType, ShaderKernelMethod, methodSymbol);
 
+            signatureEmitter.Emit();
 
+            SourceBuilder.WriteLine($"{signatureEmitter.GetSource()};");
         }
     }
 

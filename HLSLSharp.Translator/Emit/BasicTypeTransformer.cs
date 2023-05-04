@@ -7,6 +7,7 @@ internal class BasicTypeTransformer
 {
     private static readonly Dictionary<string, string> BasicTypeMappings = new Dictionary<string, string>()
     {
+        { "void", "void" },
         { "float", "float" },
         { "double", "double" },
         { "int", "int" },
