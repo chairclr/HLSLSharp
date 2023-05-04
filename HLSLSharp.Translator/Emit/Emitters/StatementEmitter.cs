@@ -79,5 +79,22 @@ internal class StatementEmitter : HLSLEmitter
 
             WriteEmitter(expressionEmitter);
         }
+
+        if (Statement is ReturnStatementSyntax returnStatement)
+        {
+            if (returnStatement.Expression is not null)
+            {
+                ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, returnStatement.Expression, StatementSemanticModel);
+
+                expressionEmitter.Emit();
+
+                SourceBuilder.Write($"return {expressionEmitter.GetSource()};");
+
+            }
+            else
+            {
+                SourceBuilder.WriteLine($"return;");
+            }
+        }
     }
 }

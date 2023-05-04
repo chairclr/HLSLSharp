@@ -5,6 +5,8 @@ using System.Text;
 using HLSLSharp.Compiler.Emit;
 using HLSLSharp.Translator.Diagnostics;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HLSLSharp.Translator.Emit.Emitters;
 
@@ -18,6 +20,7 @@ internal class ShaderMethodEmitter : HLSLEmitter
 
     public override void Emit()
     {
+        // Emit method signatures BEFORE emitting their declarations 
         foreach (IMethodSymbol methodSymbol in ShaderType.GetMembers().Where(x => x.Kind == SymbolKind.Method))
         {
             if (!ValidateMethodDeclaration(methodSymbol))
@@ -30,6 +33,32 @@ internal class ShaderMethodEmitter : HLSLEmitter
             signatureEmitter.Emit();
 
             SourceBuilder.WriteLine($"{signatureEmitter.GetSource()};");
+        }
+
+        // Emit method declarations
+        foreach (IMethodSymbol methodSymbol in ShaderType.GetMembers().Where(x => x.Kind == SymbolKind.Method))
+        {
+            if (!ValidateMethodDeclaration(methodSymbol))
+            {
+                continue;
+            }
+
+            MethodSignatureEmitter signatureEmitter = new MethodSignatureEmitter(Compilation, ShaderType, ShaderKernelMethod, methodSymbol);
+
+            signatureEmitter.Emit();
+
+            SourceBuilder.WriteLine($"{signatureEmitter.GetSource()}");
+
+            MethodDeclarationSyntax methodDeclaration = methodSymbol.DeclaringSyntaxReferences
+                .Select(x => x.GetSyntax())
+                .Where(x => x.IsKind(SyntaxKind.MethodDeclaration))
+                .Cast<MethodDeclarationSyntax>()
+                .Where(x => x.Body is not null)
+                .Single();
+
+            MethodCodeBlockEmitter codeBlockEmitter = new MethodCodeBlockEmitter(Compilation, ShaderType, ShaderKernelMethod, methodDeclaration.Body!, methodDeclaration.SyntaxTree, Compilation.GetSemanticModel(methodDeclaration.SyntaxTree));
+
+            WriteEmitter(codeBlockEmitter);
         }
     }
 

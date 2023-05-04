@@ -1,4 +1,5 @@
-﻿using HLSLSharp.Compiler.Emit;
+﻿using System;
+using HLSLSharp.Compiler.Emit;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -56,7 +57,36 @@ internal class ExpressionEmitter : HLSLEmitter
 
         if (Expression is LiteralExpressionSyntax literalExpression)
         {
-            SourceBuilder.Write($"{literalExpression.Token}");
+            if (literalExpression.Token.Value is float floatValue)
+            {
+                string floatString = floatValue.ToString();
+
+                float frac = floatValue % 1.0f;
+
+                SourceBuilder.Write($"{floatString}");
+
+                if (frac == 0)
+                {
+                    SourceBuilder.Write(".0");
+                }
+            }
+            else if (literalExpression.Token.Value is double doubleValue)
+            {
+                string floatString = doubleValue.ToString();
+
+                double frac = doubleValue % 1.0d;
+
+                SourceBuilder.Write($"{floatString}");
+
+                if (frac == 0)
+                {
+                    SourceBuilder.Write(".0");
+                }
+            }
+            else
+            {
+                SourceBuilder.Write($"{literalExpression.Token}");
+            }
         }
 
         if (Expression is BinaryExpressionSyntax binaryExpression)
