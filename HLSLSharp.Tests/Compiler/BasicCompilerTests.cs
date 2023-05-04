@@ -61,7 +61,14 @@ public class BasicCompilerTests
 
         LogDiagnostics(result);
 
-        Assert.That(result.Success, Is.True);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Success, Is.True);
+
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"uint3 threadIdCopy = ThreadId;"));
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"uint2 threadIdXY = ThreadId.xy;"));
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"uint threadIdX = ThreadId.x;"));
+        });
     }
 
     [Test]
@@ -93,7 +100,12 @@ public class BasicCompilerTests
 
         LogDiagnostics(result);
 
-        Assert.That(result.Success, Is.True);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Success, Is.True);
+
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"if (threadIdX > 10)"));
+        });
     }
 
     [Test]
@@ -126,7 +138,12 @@ public class BasicCompilerTests
 
         LogDiagnostics(result);
 
-        Assert.That(result.Success, Is.True);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Success, Is.True);
+
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"uint val = threadIdX * (ThreadId.x - (ThreadId.y * ThreadId.zzz.x));"));
+        });
     }
 
     [Test]

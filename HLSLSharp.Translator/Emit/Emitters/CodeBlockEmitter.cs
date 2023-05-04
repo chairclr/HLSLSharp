@@ -24,11 +24,6 @@ internal class CodeBlockEmitter : HLSLEmitter
 
     public override void Emit()
     {
-        SourceBuilder.WriteLine($"/// -- Original Code Block Source code -- ///");
-        SourceBuilder.WriteLine($"/*");
-        SourceBuilder.WriteLine($"{CodeBlock}");
-        SourceBuilder.WriteLine($"*/");
-
         foreach (StatementSyntax statement in CodeBlock.Statements)
         {
             StatementEmitter statementEmitter = new StatementEmitter(Compilation, ShaderType, ShaderKernelMethod, statement, CodeBlockSemanticModel);

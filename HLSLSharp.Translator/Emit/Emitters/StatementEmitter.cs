@@ -51,7 +51,9 @@ internal class StatementEmitter : HLSLEmitter
 
         if (Statement is IfStatementSyntax ifStatement)
         {
-            SourceBuilder.WriteLine($"if ({ifStatement.Condition})");
+            ExpressionEmitter conditionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, ifStatement.Condition, StatementSemanticModel);
+
+            SourceBuilder.WriteLine($"if ({conditionEmitter.GetSource()})");
 
             SourceBuilder.WriteLine($"{{");
 
