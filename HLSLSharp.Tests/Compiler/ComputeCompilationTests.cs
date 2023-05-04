@@ -15,6 +15,7 @@ public class ComputeCompilationTests : CompilerTests
     {
         string source = $$"""
                          using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Compute;
                          using HLSLSharp.CoreLib.Shaders;
                          using HLSLSharp.CoreLib.Shaders.Registers;
 

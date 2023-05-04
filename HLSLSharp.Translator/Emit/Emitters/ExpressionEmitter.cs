@@ -110,5 +110,33 @@ internal class ExpressionEmitter : HLSLEmitter
 
             SourceBuilder.Write($"({expressionEmitter.GetSource()})");
         }
+
+        if (Expression is InvocationExpressionSyntax invocationExpression)
+        {
+            if (IntrinsicCallTransformer.TryGetIntrinsicMethodCall((IMethodSymbol)ExpressionSemanticModel.GetSymbolInfo(invocationExpression).Symbol!, out string? intrinsicName))
+            {
+                SourceBuilder.Write($"{intrinsicName}(");
+
+                ArgumentListEmitter argumentEmitter = new ArgumentListEmitter(Compilation, ShaderType, ShaderKernelMethod, invocationExpression.ArgumentList);
+
+                argumentEmitter.Emit();
+
+                SourceBuilder.Write($"{argumentEmitter.GetSource()})");
+            }
+            else
+            {
+                ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, invocationExpression.Expression, ExpressionSemanticModel);
+
+                expressionEmitter.Emit();
+
+                SourceBuilder.Write($"{expressionEmitter.GetSource()}(");
+
+                ArgumentListEmitter argumentEmitter = new ArgumentListEmitter(Compilation, ShaderType, ShaderKernelMethod, invocationExpression.ArgumentList);
+
+                argumentEmitter.Emit();
+
+                SourceBuilder.Write($"{argumentEmitter.GetSource()})");
+            }
+        }
     }
 }

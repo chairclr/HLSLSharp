@@ -23,4 +23,6 @@ public static class HLSLDiagnosticDescriptors
     public static DiagnosticDescriptor MethodAbstract => new DiagnosticDescriptor($"{IdPrefix}0007", "Method cannot be abstract", "Shader methods cannot be abstract (method {0})", "Emit", DiagnosticSeverity.Error, true);
     
     public static DiagnosticDescriptor ShaderDestructor => new DiagnosticDescriptor($"{IdPrefix}0008", "Shader shouldn't have destructor", "Shaders should not have destructors", "Emit", DiagnosticSeverity.Warning, true);
+    
+    public static DiagnosticDescriptor MissingRegisterAttribute => new DiagnosticDescriptor($"{IdPrefix}0009", "Missing register attribute", "Missing register attribute", "Emit", DiagnosticSeverity.Error, true);
 }

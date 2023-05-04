@@ -40,11 +40,23 @@ internal class BasicTypeTransformer
         { "HLSLSharp.CoreLib.Vector4<bool>", "bool4" },
     };
 
+    private static readonly Dictionary<string, string> BufferTypeMappings = new Dictionary<string, string>()
+    {
+        { "HLSLSharp.CoreLib.Compute.RWBuffer`1", "RWBuffer" },
+    };
+
     public static bool TryGetHLSLTypeName(INamedTypeSymbol csType, out string? hlslType)
     {
         string fullyQualifiedName = csType.ToString();
 
         return BasicTypeMappings.TryGetValue(fullyQualifiedName, out hlslType);
+    }
+
+    public static bool TryGetComputeBufferName(INamedTypeSymbol csType, out string? hlslType)
+    {
+        string fullyQualifiedName = $"{csType.ContainingNamespace}.{csType.MetadataName}";
+
+        return BufferTypeMappings.TryGetValue(fullyQualifiedName, out hlslType);
     }
 
     public static bool IsVectorType(INamedTypeSymbol csType)
