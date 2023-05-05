@@ -138,5 +138,20 @@ internal class ExpressionEmitter : HLSLEmitter
                 SourceBuilder.Write($"{argumentEmitter.GetSource()})");
             }
         }
+
+        if (Expression is ElementAccessExpressionSyntax elementAccessExpression)
+        {
+            ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, elementAccessExpression.Expression, ExpressionSemanticModel);
+
+            expressionEmitter.Emit();
+
+            SourceBuilder.Write($"{expressionEmitter.GetSource()}");
+
+            ArgumentListEmitter argumentListEmitter = new ArgumentListEmitter(Compilation, ShaderType, ShaderKernelMethod, elementAccessExpression.ArgumentList);
+
+            argumentListEmitter.Emit();
+
+            SourceBuilder.Write($"[{argumentListEmitter.GetSource()}]");
+        }
     }
 }

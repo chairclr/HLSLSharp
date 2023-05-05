@@ -81,14 +81,14 @@ internal class ShaderTranslator
 
         ShaderEmitters = new List<HLSLEmitter>();
 
-        ShaderEmitters.Add(CreateEmitter<ShaderMethodEmitter>());
-
         // if-check to allow different shader types in the future
         if (true)
         {
             ShaderEmitters.Add(CreateEmitter<ComputeFieldEmitter>());
             ShaderEmitters.Add(CreateEmitter<ComputeKernelDeclarationEmitter>());
         }
+
+        ShaderEmitters.Add(CreateEmitter<ShaderMethodEmitter>());
 
         ShaderEmitters.Add(CreateEmitter<MethodCodeBlockEmitter>(KernelBodyDeclaration.Body!, KernelBodySyntaxTree, KernelBodySemanticModel));
     }

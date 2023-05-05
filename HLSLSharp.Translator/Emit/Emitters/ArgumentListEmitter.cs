@@ -9,9 +9,9 @@ namespace HLSLSharp.Translator.Emit.Emitters;
 
 internal class ArgumentListEmitter : HLSLEmitter
 {
-    private readonly ArgumentListSyntax ArgumentList;
+    private readonly BaseArgumentListSyntax ArgumentList;
 
-    public ArgumentListEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, ArgumentListSyntax argumentList)
+    public ArgumentListEmitter(Compilation compilation, INamedTypeSymbol shaderType, IMethodSymbol shaderKernelMethod, BaseArgumentListSyntax argumentList)
         : base(compilation, shaderType, shaderKernelMethod)
     {
         ArgumentList = argumentList;

@@ -30,9 +30,14 @@ public class ComputeCompilationTests : CompilerTests
                             {
                                 float s = ReadWriteBuffer[ThreadId.X];
 
-                                float sqrtS = Intrinsics.Sqrt(s);
+                                float modifiedS = Op(s);
 
-                                ReadWriteBuffer[ThreadId.X] = sqrtS;
+                                ReadWriteBuffer[ThreadId.X] = modifiedS;
+                            }
+
+                            private float Op(float input)
+                            {
+                                return Intrinsics.Sqrt(input);
                             }
                          }
                          """;
