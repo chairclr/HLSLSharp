@@ -59,6 +59,10 @@ public abstract class ProjectTranslator
         Compilation = Compilation
             .AddSyntaxTrees(InternalGeneratedSources.Select(x => x.SyntaxTree));
 
+        ShaderTranslators.Clear();
+
+        InitializeShaderTranslators();
+
         foreach (Diagnostic diagnostic in Compilation.GetDiagnostics())
         {
             ReportDiagnostic(diagnostic);

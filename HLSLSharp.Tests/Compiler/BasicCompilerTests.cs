@@ -72,6 +72,42 @@ public class BasicCompilerTests : CompilerTests
     }
 
     [Test]
+    public void CastComputeCompilation()
+    {
+        string source = $$"""
+                         using HLSLSharp.CoreLib;
+                         using HLSLSharp.CoreLib.Shaders;
+
+                         [ComputeShader(1, 1, 1)]
+                         public partial struct SuperSimpleCompute : IComputeShader
+                         {
+                            [Kernel]
+                            public void Compute()
+                            {
+                                uint threadIdX = ThreadId.X;
+                                float threadIdXFloat = (float)threadIdX;
+                                float threadIdYFloat = (float)ThreadId.Y;
+                                float s = (float)ThreadId.X;
+                            }
+                         }
+                         """;
+
+        SourceTranslator translator = new SourceTranslator(source);
+
+        ProjectEmitResult result = translator.Emit();
+
+        LogDiagnostics(result);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Success, Is.True);
+
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"(float)threadIdX;"));
+            Assert.That(result.ShaderEmitResults.Single().Result, Contains.Substring($"(float)ThreadId.y;"));
+        });
+    }
+
+    [Test]
     public void SimpleIfStatementComputeCompilation()
     {
         string source = $$"""

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using HLSLSharp.Compiler.Emit;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -113,7 +114,11 @@ internal class ExpressionEmitter : HLSLEmitter
 
         if (Expression is InvocationExpressionSyntax invocationExpression)
         {
-            if (IntrinsicCallTransformer.TryGetIntrinsicMethodCall((IMethodSymbol)ExpressionSemanticModel.GetSymbolInfo(invocationExpression).Symbol!, out string? intrinsicName))
+            IMethodSymbol? methodSymbol = (IMethodSymbol?)ExpressionSemanticModel.GetSymbolInfo(invocationExpression).Symbol;
+
+            methodSymbol ??= (IMethodSymbol?)ExpressionSemanticModel.GetSymbolInfo(invocationExpression).CandidateSymbols.First();
+
+            if (IntrinsicCallTransformer.TryGetIntrinsicMethodCall((IMethodSymbol)methodSymbol!, out string? intrinsicName))
             {
                 SourceBuilder.Write($"{intrinsicName}(");
 
@@ -152,6 +157,22 @@ internal class ExpressionEmitter : HLSLEmitter
             argumentListEmitter.Emit();
 
             SourceBuilder.Write($"[{argumentListEmitter.GetSource()}]");
+        }
+
+        if (Expression is CastExpressionSyntax castExpression)
+        {
+            INamedTypeSymbol type = (INamedTypeSymbol)ExpressionSemanticModel.GetTypeInfo(castExpression.Type).Type!;
+
+            if (BasicTypeTransformer.TryGetHLSLTypeName(type, out string? hlslCastType))
+            {
+                SourceBuilder.Write($"({hlslCastType})");
+            }
+
+            ExpressionEmitter expressionEmitter = new ExpressionEmitter(Compilation, ShaderType, ShaderKernelMethod, castExpression.Expression, ExpressionSemanticModel);
+
+            expressionEmitter.Emit();
+
+            SourceBuilder.Write($"{expressionEmitter.GetSource()}");
         }
     }
 }
